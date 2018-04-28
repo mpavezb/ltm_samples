@@ -36,7 +36,8 @@
     <!-- -->
 
     <!-- excution dependencies -->
-    <!--  -->
+    <exec_depend>video_stream_opencv</exec_depend>
+    <exec_depend>image_view</exec_depend>
 
     <!-- test dependencies -->
     <!--  -->

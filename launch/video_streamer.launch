@@ -2,19 +2,19 @@
 
     <!-- parameters -->
     <!-- <arg name="filename" default="DARPA.avi"/> -->
-    <arg name="filename" default="big_buck_bunny_720p_30mb.mp4"/>
-    <arg name="view"     default="false"/>
+    <arg name="video" default="big_buck_bunny_720p_30mb.mp4"/>
+    <arg name="view"  default="false"/>
 
 
     <!-- launch video stream -->
-    <include file="$(find video_stream_opencv)/launch/camera.launch" ns="/robot/sensors/">
+    <include file="$(find video_stream_opencv)/launch/camera.launch" ns="/robot/fake/sensors/">
 
         <!-- node name and ros graph name -->
         <arg name="camera_name" value="camera" />
 
         <!-- full path to the video file -->
         <!-- wget http://techslides.com/demos/sample-videos/small.mp4 -O /tmp/small.mp4 -->
-        <arg name="video_stream_provider" value="$(find ltm)/test/media/video/$(arg filename)" />
+        <arg name="video_stream_provider" value="$(find ltm_samples)/samples/video/$(arg video)" />
 
         <!-- set camera fps to (video files not affected) -->
         <!-- <arg name="set_camera_fps" value="30"/> -->
@@ -25,7 +25,7 @@
         <arg name="fps" value="30" />
 
         <!-- setting frame_id -->
-        <arg name="frame_id" value="/robot/sensors/camera_frame" />
+        <arg name="frame_id" value="/robot/fake/sensors/camera_frame" />
 
         <!-- camera info loading, take care as it needs the "file:///" at the start , e.g.:
         "file:///$(find your_camera_package)/config/your_camera.yaml" -->

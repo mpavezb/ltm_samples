@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MEDIA_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DEST_DIR="${MEDIA_DIR}/video"
+PACKAGE_DIR="$(rospack find ltm_samples)"
+DEST_DIR="${PACKAGE_DIR}/samples/video"
 
 # get videos from https://www.sample-videos.com/
 declare -a arr=(
