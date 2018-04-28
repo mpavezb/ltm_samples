@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<package format="2">
+
+    <!-- PACKAGE INFORMATION -->
+    <!-- - - - - - - - - - - -->
+    <name>ltm_samples</name>
+    <version>0.0.0</version>
+    <description>
+        (Sample code and scripts) Long Term Memory for robots using ROS. Thesis project. 
+    </description>
+    <author email="matias.pavez@ing.uchile.cl">Matías Pavez</author>
+    <maintainer email="matias.pavez@ing.uchile.cl">Matías Pavez</maintainer>
+
+    <license>GPL-3.0</license>
+    <url type="repository">https://github.com/mpavezb/ltm_samples</url>
+
+
+    <!-- SYSTEM DEPENDENCIES -->
+    <!-- - - - - - - - - - - -->
+
+    <!--  build system tool to build this package -->
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <!-- build, export, and execution dependencies -->
+    <depend>rospy</depend>
+    <depend>roscpp</depend>
+    <depend>ltm</depend>
+    <depend>smach</depend>
+    <depend>smach_ros</depend>
+
+
+    <!-- build dependencies -->
+    <!--  -->
+
+    <!-- export dependencies -->
+    <!-- -->
+
+    <!-- excution dependencies -->
+    <!--  -->
+
+    <!-- test dependencies -->
+    <!--  -->
+
+    <!-- documentation dependencies -->
+    <!-- -->
+
+    <export>
+    </export>
+
+</package>
