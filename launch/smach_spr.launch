@@ -1,0 +1,13 @@
+<launch>
+
+	<!-- params -->
+	<arg name="viewer" default="false"/>
+
+	<!-- state machine -->
+    <node name="spr" type="spr.py" pkg="ltm_samples" ns="robot/smach" output="screen"/>
+
+    <!-- viewer -->
+	<node if="$(arg viewer)"
+		name="smach_viewer" type="smach_viewer.py" pkg="smach_viewer" ns="robot/smach" output="screen" />
+
+</launch>
