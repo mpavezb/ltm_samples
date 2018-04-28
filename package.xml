@@ -24,18 +24,22 @@
     <!-- build, export, and execution dependencies -->
     <depend>rospy</depend>
     <depend>roscpp</depend>
+    <depend>std_msgs</depend>
+    <depend>geometry_msgs</depend>
+    <depend>sensor_msgs</depend>
     <depend>ltm</depend>
     <depend>smach</depend>
     <depend>smach_ros</depend>
 
 
     <!-- build dependencies -->
-    <!--  -->
+    <build_depend>message_generation</build_depend>
 
     <!-- export dependencies -->
     <!-- -->
 
     <!-- excution dependencies -->
+    <exec_depend>message_runtime</exec_depend>
     <exec_depend>video_stream_opencv</exec_depend>
     <exec_depend>image_view</exec_depend>
 
