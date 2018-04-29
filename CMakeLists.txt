@@ -12,6 +12,7 @@ find_package(catkin REQUIRED
     std_msgs
     geometry_msgs
     sensor_msgs
+    cv_bridge
     message_generation
     ltm
 )
@@ -72,7 +73,7 @@ generate_messages(
 catkin_package(
     INCLUDE_DIRS ${CATKIN_DEVEL_PREFIX}/include # include
     LIBRARIES
-    CATKIN_DEPENDS roscpp std_msgs geometry_msgs sensor_msgs message_runtime ltm
+    CATKIN_DEPENDS roscpp std_msgs geometry_msgs sensor_msgs message_runtime cv_bridge ltm
     DEPENDS
 )
 

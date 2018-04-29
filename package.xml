@@ -30,7 +30,7 @@
     <depend>ltm</depend>
     <depend>smach</depend>
     <depend>smach_ros</depend>
-
+    <depend>cv_bridge</depend>
 
     <!-- build dependencies -->
     <build_depend>message_generation</build_depend>
