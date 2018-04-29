@@ -45,6 +45,14 @@ for url in "${arr[@]}"
 do
     FILENAME="${url##*/}"
     FULL_FILENAME=${DEST_DIR}/${FILENAME}
+
+    # delete empty file if exists (this can happen when the file download failed)
+    if [ -f ${FULL_FILENAME} ] && [ ! -s "${FULL_FILENAME}" ]; then
+        printf "${YELLOW} - deleting empty video file: ${FILENAME}${NC}\n"
+        rm -f ${FULL_FILENAME}
+    fi
+
+    # download
     if  [ ! -f ${FULL_FILENAME} ]; then
         printf "${YELLOW} - downloading: ${FILENAME}${NC}\n"
         wget ${url} -O ${FULL_FILENAME}

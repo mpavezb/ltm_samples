@@ -16,7 +16,7 @@ find_package(catkin REQUIRED
     ltm
 )
 
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -95,10 +95,10 @@ link_directories(${catkin_LINK_DIRS})
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
-# catkin_install_python(
-#     PROGRAMS scripts/json_loader
-#     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+catkin_install_python(
+    PROGRAMS scripts/fake_robot
+    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination

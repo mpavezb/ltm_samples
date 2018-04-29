@@ -1,6 +1,6 @@
 <launch>
 
-    <node name="fake" type="fake_robot.py" pkg="ltm_samples" ns="robot" output="screen">
+    <node name="fake" type="fake_robot" pkg="ltm_samples" ns="robot" output="screen">
         <rosparam command="load" file="$(find ltm_samples)/config/fake_robot.yaml"/>
     </node>
 

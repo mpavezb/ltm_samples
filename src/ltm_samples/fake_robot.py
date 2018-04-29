@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import rospy
-from ltm.srv import *
-from ltm.msg import *
-from geometry_msgs.msg import Point
+__author__ = 'Matías Pavez'
+__email__ = 'matias.pavez@ing.uchile.cl'
 
 import random
+import rospy
+from geometry_msgs.msg import Point
+from ltm.srv import *
+from ltm.msg import *
 
 
 class Robot(object):
