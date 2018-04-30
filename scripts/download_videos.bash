@@ -2,6 +2,7 @@
 
 PACKAGE_DIR="$(rospack find ltm_samples)"
 DEST_DIR="${PACKAGE_DIR}/samples/video"
+mkdir -p ${DEST_DIR}
 
 # get videos from https://www.sample-videos.com/
 declare -a arr=(

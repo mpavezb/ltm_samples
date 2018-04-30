@@ -124,23 +124,25 @@ class MsgGenerator(object):
         return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
     def get_random_image(self, _type):
-        target_dir = self.pkg_path + '/samples/images/' + _type
-        files = [f for f in listdir(target_dir) if isfile(join(target_dir, f)) and f.endswith('.jpg')]
-        if not files:
+        try:
+            target_dir = self.pkg_path + '/samples/images/' + _type
+            files = [f for f in listdir(target_dir) if isfile(join(target_dir, f)) and f.endswith('.jpg')]
+            rand_id = random.randint(0, len(files)-1)
+            filename = join(target_dir, files[rand_id])
+            image = cv2.imread(filename, cv2.IMREAD_COLOR)
+        except OSError as e:
             print(">> No .jpg image files were found on: " + target_dir)
             print(">> Please download some images (Read the ltm tutorials)")
-            return
-        rand_id = random.randint(0, len(files)-1)
-        filename = join(target_dir, files[rand_id])
-        image = cv2.imread(filename, cv2.IMREAD_COLOR)
+            print(">> Exception: " + str(e))
+            return Image()
         return image
 
     def get_random_ros_image(self, _type):
-        cv_image = self.get_random_image(_type)
         try:
+            cv_image = self.get_random_image(_type)
             ros_image = self.bridge.cv2_to_imgmsg(cv_image, "bgr8")
-        except CvBridgeError as e:
-            print(e)
+        except (CvBridgeError, TypeError) as e:
+            print(">> Exception: " + str(e))
             return Image()
         return ros_image
 
