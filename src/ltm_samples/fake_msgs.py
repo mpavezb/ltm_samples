@@ -11,6 +11,7 @@ import cv2
 
 # ROS stuff
 import rospkg
+import rospy
 from cv_bridge import CvBridge, CvBridgeError
 from geometry_msgs.msg import Point
 from sensor_msgs.msg import Image
@@ -53,6 +54,8 @@ class MsgGenerator(object):
         state = HumanState()
         state.emotion = random.choice(self.emotions)
         state.stance = random.choice(self.stances)
+        state.last_seen = rospy.Time.now()
+        state.last_interacted = rospy.Time.now()
         return state
 
     def gen_object(self):
@@ -148,6 +151,7 @@ class MsgGenerator(object):
 
 
 def main():
+    rospy.init_node('ltm_samples_msg_generator')
     gen = MsgGenerator()
     human = gen.gen_human()
     human.body = None
