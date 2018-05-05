@@ -9,6 +9,7 @@ import smach_ros
 import crowd_analysis
 import riddle_game
 import blind_man_game
+from ltm.smach import ltm
 
 
 def get_instance():
@@ -42,6 +43,8 @@ def main():
 
         # build machine
         sm = get_instance()
+        ltm.introspect(sm)
+        ltm.setup(sm)
 
         # smach introspection server
         sis = smach_ros.IntrospectionServer('robocup_spr_sis', sm, '/SM_SPR')
