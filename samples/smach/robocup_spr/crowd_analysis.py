@@ -34,14 +34,17 @@ def get_look_for_crowd_sm():
 
 
 def get_analyze_crowd_sm():
-    sm = smach.StateMachine(outcomes=['succeeded'])
+    sm = smach.StateMachine(outcomes=['succeeded', 'failed'])
     sm.tags = ["crowd_analysis"]
     with sm:
 
         smach.StateMachine.add(
             'ANALYZE_PEOPLE',
             AnalyzePeople(),
-            transitions={'succeeded': 'GIVE_PEOPLE_INFO'}
+            transitions={
+                'succeeded': 'GIVE_PEOPLE_INFO',
+                'failed': 'failed'
+            }
         )
 
         smach.StateMachine.add(
@@ -72,7 +75,10 @@ def get_instance():
         smach.StateMachine.add(
             'ANALYZE_CROWD',
             get_analyze_crowd_sm(),
-            transitions={'succeeded': 'END_TALK'}
+            transitions={
+                'succeeded': 'END_TALK',
+                'failed': 'LOOK_FOR_CROWD'
+            }
         )
 
         smach.StateMachine.add(

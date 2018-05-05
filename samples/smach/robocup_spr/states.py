@@ -30,10 +30,15 @@ class LookForPeople(smach.State):
 
 class AnalyzePeople(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['succeeded'])
+        smach.State.__init__(self, outcomes=['succeeded', 'failed'])
         self.tags = ["analyze_crowd"]
+        self.failed = False
 
     def execute(self, userdata):
         rospy.logwarn('[state]| Analyze people |: mmm ... <beep> i am gathering information about you <bop>.')
         rospy.sleep(1.0)
+        if not self.failed:
+            self.failed = True
+            rospy.logwarn('[state]| Analyze people |: mmm ... <KABOOM!> i have failed. <UPSS>.')
+            return 'failed'
         return 'succeeded'
