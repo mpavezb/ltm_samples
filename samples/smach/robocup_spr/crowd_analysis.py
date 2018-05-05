@@ -4,12 +4,13 @@
 import rospy
 import smach
 import smach_ros
+import ltm.smach as ltm
 from states import Talk, LookForPeople, AnalyzePeople
 
 
 def get_look_for_crowd_sm():
     sm = smach.StateMachine(outcomes=['succeeded'])
-    sm.tags = ["crowd_analysis", "look_for_crowd"]
+    ltm.register_state(sm, ["look_for_crowd"])
 
     with sm:
         smach.StateMachine.add(
@@ -35,7 +36,7 @@ def get_look_for_crowd_sm():
 
 def get_analyze_crowd_sm():
     sm = smach.StateMachine(outcomes=['succeeded', 'failed'])
-    sm.tags = ["crowd_analysis"]
+    ltm.register_state(sm, ["crowd_analysis"])
     with sm:
 
         smach.StateMachine.add(
@@ -58,7 +59,7 @@ def get_analyze_crowd_sm():
 
 def get_instance():
     sm = smach.StateMachine(outcomes=['succeeded'])
-    sm.tags = ["crowd_analysis"]
+    ltm.register_state(sm, ["crowd_analysis"])
     with sm:
         smach.StateMachine.add(
             'INIT_TALK',

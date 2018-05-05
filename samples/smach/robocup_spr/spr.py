@@ -14,7 +14,7 @@ import ltm.smach as ltm
 
 def get_instance():
     sm = smach.StateMachine(outcomes=['succeeded'])
-    sm.tags = ["robocup", "stage_1", "test"]
+    ltm.register_state(sm, ["robocup", "stage_1", "spr"])
     with sm:
 
         smach.StateMachine.add(
