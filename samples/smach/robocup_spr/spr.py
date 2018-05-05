@@ -9,7 +9,7 @@ import smach_ros
 import crowd_analysis
 import riddle_game
 import blind_man_game
-from ltm.smach import ltm
+import ltm.smach as ltm
 
 
 def get_instance():
@@ -43,7 +43,6 @@ def main():
 
         # build machine
         sm = get_instance()
-        ltm.introspect(sm)
         ltm.setup(sm)
 
         # smach introspection server
