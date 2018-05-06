@@ -24,7 +24,7 @@ class LookForPeople(smach.State):
 
     def execute(self, userdata):
         rospy.logwarn('[state]| Look for people |: I am looking for people. Where are you hiding?.')
-        rospy.sleep(0.25)
+        rospy.sleep(0.5)
         return 'succeeded'
 
 

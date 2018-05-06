@@ -39,7 +39,7 @@ def get_instance():
 
 def main():
     try:
-        rospy.init_node('robocup_spr')
+        rospy.init_node('robocup_spr', log_level=rospy.DEBUG)
 
         # build machine
         sm = get_instance()
