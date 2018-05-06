@@ -31,6 +31,7 @@
     <depend>smach</depend>
     <depend>smach_ros</depend>
     <depend>cv_bridge</depend>
+    <depend>pluginlib</depend>
 
     <!-- build dependencies -->
     <build_depend>message_generation</build_depend>
@@ -50,6 +51,8 @@
     <!-- -->
 
     <export>
+        <!-- ltm related plugins -->
+        <ltm plugin="${prefix}/ltm_plugins.xml"/>
     </export>
 
 </package>

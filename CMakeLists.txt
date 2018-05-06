@@ -15,6 +15,7 @@ find_package(catkin REQUIRED
     cv_bridge
     message_generation
     ltm
+    pluginlib
 )
 
 catkin_python_setup()
@@ -71,7 +72,7 @@ generate_messages(
 ## catkin specific configuration ##
 ###################################
 catkin_package(
-    INCLUDE_DIRS ${CATKIN_DEVEL_PREFIX}/include # include
+    INCLUDE_DIRS ${CATKIN_DEVEL_PREFIX}/include include
     LIBRARIES
     CATKIN_DEPENDS roscpp std_msgs geometry_msgs sensor_msgs message_runtime cv_bridge ltm
     DEPENDS
@@ -83,11 +84,13 @@ catkin_package(
 ###########
 include_directories(
     ${CATKIN_DEVEL_PREFIX}/include
-    # include
+    include
     ${catkin_INCLUDE_DIRS}
 )
 link_directories(${catkin_LINK_DIRS})
 
+# ltm_plugins library
+add_library(ltm_samples__ltm_plugins src/ltm_plugins.cpp)
 
 #############
 ## Install ##
