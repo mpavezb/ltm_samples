@@ -1,0 +1,64 @@
+# Sample configuration file for the LTM server.
+#
+# It loads all plugins defined in this package
+# - EmotionPlugin
+# - LocationPlugin
+# - ImageStreamPlugin
+# - PeopleEntityPlugin, ObjectsEntityPlugin, RobotEntityPlugin, LocationEntityPlugin
+
+
+# Server parameters
+db:          "ltm_db"
+collection:  "episodes"
+host:        "localhost"
+port:         27017
+timeout:      60.0
+
+
+# LTM plugins and parameters.
+# Each plugin must define the pluginlib class and its parameters
+plugins:
+
+  # Emotion Engine plugin
+  emotion:
+    # Class to load through pluginlib
+    class: "ltm_samples::EmotionPlugin"
+
+  # Robot location plugin
+  location:
+    # Class to load through pluginlib
+    class: "ltm_samples::LocationPlugin"
+
+  # Stream plugins
+  streams:
+    # List of names to consider. 
+    # For each name, you must declare its class and ROS parameters.
+    include: ["image"]
+
+    # ImageStream
+    image:
+      class: "ltm_samples::ImageStreamPlugin"
+
+
+  # Entity plugins
+  entities:
+    # List of names to consider. 
+    # For each name, you must declare its class and ROS parameters.
+    include: ["people", "objects", "robot", "location"]
+
+    # PeopleEntityPlugin
+    people:
+      class: "ltm_samples::PeopleEntityPlugin"
+
+    # ObjectsEntityPlugin
+    objects:
+      class: "ltm_samples::ObjectsEntityPlugin"
+
+    # RobotEntityPlugin
+    robot:
+      class: "ltm_samples::RobotEntityPlugin"
+
+    # LocationEntityPlugin
+    location:
+      class: "ltm_samples::LocationEntityPlugin"
+

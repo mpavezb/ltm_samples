@@ -1,0 +1,8 @@
+<launch>
+
+    <!-- LTM server -->
+    <include file="$(find ltm)/launch/ltm.launch" ns="robot">
+        <arg name="config_file" value="$(find ltm_samples)/config/server.yaml"/>
+    </include>
+
+</launch>
