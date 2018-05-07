@@ -3,26 +3,28 @@
 #include <ltm/plugins_base.h>
 #include <ros/ros.h>
 
-
 namespace ltm_samples
 {
-
     class ImageStreamPlugin : public ltm::plugin::StreamBase
     {
     public:
         ImageStreamPlugin(){}
 
-        void initialize(double side_length) {
-            side_length_ = side_length;
-            ROS_INFO("LTM Image Stream plugin initialized.");
+        void initialize(const std::string& param_ns) {
+            ROS_INFO_STREAM("LTM Image Stream plugin initialized with ns: " << param_ns);
         }
 
-        bool get_stream() {
-            return true;
+        void register_episode(uint32_t uid) {
+            ROS_INFO_STREAM("LTM Image Stream plugin: registering episode " << uid);
         }
 
-    private:
-        double side_length_;
+        void unregister_episode(uint32_t uid) {
+            ROS_INFO_STREAM("LTM Image Stream plugin: unregistering episode " << uid);
+        }
+
+        void collect(uint32_t uid, ltm::What& msg) {
+            ROS_INFO_STREAM("LTM Image Stream plugin: collecting episode " << uid);
+        }
     };
 
 };
