@@ -1,6 +1,12 @@
 #include <pluginlib/class_list_macros.h>
 #include <ltm/plugins_base.h>
-#include <ltm_samples/ltm_plugins.h>
+#include <ltm_samples/emotion_plugin.h>
+#include <ltm_samples/location_plugin.h>
+#include <ltm_samples/image_stream_plugin.h>
+#include <ltm_samples/people_entity_plugin.h>
+#include <ltm_samples/objects_entity_plugin.h>
+#include <ltm_samples/robot_entity_plugin.h>
+#include <ltm_samples/location_entity_plugin.h>
 
 
 PLUGINLIB_EXPORT_CLASS(ltm_samples::EmotionPlugin, ltm::plugin::EmotionBase)
