@@ -54,10 +54,13 @@ class Robot(object):
         emotions = EmotionalRelevance()
         emotions.software = self.relevance_emotional_software
         emotions.software_version = self.relevance_emotional_software_version
-        emotions.registered_emotions = []
-        emotions.registered_values = []
-        emotions.emotion = random.randint(0, 7)
-        emotions.value = max(random.gauss(0.4, 0.2), 0.05)
+        emotions.registered_emotions = ["JOY", "TRUST", "FEAR", "SURPRISE", "SADNESS", "DISGUST", "ANGER", "ANTICIPATION"]
+        values = [random.uniform(0.1, 1.0) for x in range(0, 8)]
+        total = sum(values)
+        emotions.registered_values = [x / total for x in values]
+        val, idx = max((val, idx) for (idx, val) in enumerate(emotions.registered_values))
+        emotions.value = val
+        emotions.emotion = idx
 
         # return response
         episode = Episode()
