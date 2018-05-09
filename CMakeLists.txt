@@ -91,6 +91,8 @@ link_directories(${catkin_LINK_DIRS})
 
 # ltm_plugins library
 add_library(ltm_samples__ltm_plugins src/ltm_plugins.cpp)
+add_dependencies(ltm_samples__ltm_plugins ${catkin_EXPORTED_TARGETS})
+
 
 #############
 ## Install ##
