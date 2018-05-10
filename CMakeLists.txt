@@ -34,6 +34,7 @@ add_message_files(
     Place.msg
     Robot.msg
     RobotState.msg
+    ImageStream.msg
 )
 
 ## Generate services in the 'srv' folder
