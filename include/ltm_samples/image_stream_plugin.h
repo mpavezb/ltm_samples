@@ -10,51 +10,55 @@
 #include <warehouse_ros_mongo/database_connection.h>
 
 typedef warehouse_ros::MessageCollection<ltm_samples::ImageStream> ImageStreamCollection;
-typedef boost::shared_ptr<EpisodeCollection> ImageStreamCollectionPtr;
+typedef boost::shared_ptr<ImageStreamCollection> ImageStreamCollectionPtr;
 
-typedef warehouse_ros::MessageWithMetadata<ltm::Episode> ImageStreamWithMetadata;
-typedef boost::shared_ptr<const EpisodeWithMetadata> ImageStreamWithMetadataPtr;
-
+typedef warehouse_ros::MessageWithMetadata<ltm_samples::ImageStream> ImageStreamWithMetadata;
+typedef boost::shared_ptr<const ImageStreamWithMetadata> ImageStreamWithMetadataPtr;
 
 namespace ltm_samples
 {
     class ImageStreamPlugin : public ltm::plugin::StreamBase
     {
+    // TODO: (un)subscribe on demand.
+
+    private:
+        // plugin
+        std::string log_prefix;
+        std::string type;
+        std::string collection_name;
+
+        // timing
+        int buffer_max_size;
+        ros::Duration buffer_period;
+        ros::Time last_callback;
+
+        // subscriber
+        std::string image_topic;
+        ros::Subscriber image_sub;
+
+        // database
+        warehouse_ros_mongo::MongoDatabaseConnection _conn;
+        ImageStreamCollectionPtr _coll;
+
+
+        void image_callback(const sensor_msgs::Image::ConstPtr& msg);
+
     public:
         ImageStreamPlugin(){}
 
-        void initialize(const std::string& param_ns) {
-            ROS_DEBUG_STREAM("LTM Image Stream plugin initialized with ns: " << param_ns);
+        void initialize(const std::string& param_ns);
 
-        }
+        void register_episode(uint32_t uid);
 
-        void register_episode(uint32_t uid) {
-            ROS_DEBUG_STREAM("LTM Image Stream plugin: registering episode " << uid);
-        }
+        void unregister_episode(uint32_t uid);
 
-        void unregister_episode(uint32_t uid) {
-            ROS_DEBUG_STREAM("LTM Image Stream plugin: unregistering episode " << uid);
-        }
+        void collect(uint32_t uid, ltm::What& msg);
 
-        void collect(uint32_t uid, ltm::What& msg) {
-            ROS_DEBUG_STREAM("LTM Image Stream plugin: collecting episode " << uid);
-        }
+        void degrade(uint32_t uid);
 
-        void degrade(uint32_t uid) {
-            // TODO
-        }
+        std::string get_type();
 
-        std::string get_type() {
-            return "images";
-        }
-
-        std::string get_collection_name() {
-            return "image_streams";
-        }
-    private:
-        warehouse_ros_mongo::MongoDatabaseConnection _conn;
-        ImageStreamCollectionPtr _coll;
-        std::string log_prefix;
+        std::string get_collection_name();
     };
 
 };

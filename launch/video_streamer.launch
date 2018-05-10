@@ -2,7 +2,7 @@
 
     <!-- parameters -->
     <!-- <arg name="filename" default="DARPA.avi"/> -->
-    <arg name="video" default="big_buck_bunny_720p_30mb.mp4"/>
+    <arg name="video" default="big_buck_bunny_240p_30mb.mp4"/>
     <arg name="view"  default="false"/>
 
 

@@ -38,7 +38,11 @@ plugins:
     # ImageStream
     image:
       class: "ltm_samples::ImageStreamPlugin"
-
+      type: "images"
+      collection: "image_streams"
+      topic: "/robot/fake/sensors/camera/image_raw"
+      buffer_frequency: 3.0
+      buffer_size: 100
 
   # Entity plugins
   entities:

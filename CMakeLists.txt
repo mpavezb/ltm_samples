@@ -91,7 +91,7 @@ include_directories(
 link_directories(${catkin_LINK_DIRS})
 
 # ltm_plugins library
-add_library(ltm_samples__ltm_plugins src/ltm_plugins.cpp)
+add_library(ltm_samples__ltm_plugins src/ltm_plugins.cpp src/image_stream_plugin.cpp)
 add_dependencies(ltm_samples__ltm_plugins ${catkin_EXPORTED_TARGETS})
 
 

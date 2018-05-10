@@ -13,7 +13,7 @@ class Talk(smach.State):
 
     def execute(self, userdata):
         rospy.logwarn('[state]| Talk |: ' + self.text)
-        rospy.sleep(1.0)
+        rospy.sleep(0.5)
         return 'succeeded'
 
 
@@ -36,7 +36,7 @@ class AnalyzePeople(smach.State):
 
     def execute(self, userdata):
         rospy.logwarn('[state]| Analyze people |: mmm ... <beep> i am gathering information about you <bop>.')
-        rospy.sleep(1.0)
+        rospy.sleep(0.5)
         if not self.failed:
             self.failed = True
             rospy.logwarn('[state]| Analyze people |: mmm ... <KABOOM!> i have failed. <UPSS>.')
