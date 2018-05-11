@@ -23,25 +23,31 @@ namespace ltm_samples
 
     private:
         // plugin
-        std::string log_prefix;
-        std::string type;
-        std::string collection_name;
+        std::string _log_prefix;
+        std::string _type;
+        std::string _collection_name;
+        std::vector<sensor_msgs::ImageConstPtr> _buffer;
+        std::vector<uint32_t> registry;
+        size_t _last_idx;
+        size_t _buffer_size;
 
         // timing
-        int buffer_max_size;
-        ros::Duration buffer_period;
-        ros::Time last_callback;
+        int _buffer_max_size;
+        ros::Duration _buffer_period;
+        ros::Time _last_callback;
 
         // subscriber
-        std::string image_topic;
-        ros::Subscriber image_sub;
+        std::string _image_topic;
+        ros::Subscriber _image_sub;
 
         // database
         warehouse_ros_mongo::MongoDatabaseConnection _conn;
         ImageStreamCollectionPtr _coll;
 
 
-        void image_callback(const sensor_msgs::Image::ConstPtr& msg);
+        void image_callback(const sensor_msgs::ImageConstPtr& msg);
+        void subscribe();
+        void unsubscribe();
 
     public:
         ImageStreamPlugin(){}
