@@ -24,7 +24,7 @@ class LookForPeople(smach.State):
 
     def execute(self, userdata):
         rospy.logwarn('[state]| Look for people |: I am looking for people. Where are you hiding?.')
-        rospy.sleep(0.5)
+        rospy.sleep(1.0)
         return 'succeeded'
 
 
@@ -36,7 +36,7 @@ class AnalyzePeople(smach.State):
 
     def execute(self, userdata):
         rospy.logwarn('[state]| Analyze people |: mmm ... <beep> i am gathering information about you <bop>.')
-        rospy.sleep(0.5)
+        rospy.sleep(1.0)
         if not self.failed:
             self.failed = True
             rospy.logwarn('[state]| Analyze people |: mmm ... <KABOOM!> i have failed. <UPSS>.')
