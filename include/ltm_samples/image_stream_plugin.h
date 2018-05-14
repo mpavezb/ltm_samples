@@ -21,8 +21,6 @@ namespace ltm_samples
 {
     class ImageStreamPlugin : public ltm::plugin::StreamBase
     {
-    // TODO: (un)subscribe on demand.
-
     private:
         // plugin
         std::string _log_prefix;

@@ -27,12 +27,12 @@ catkin_python_setup()
 # Generate messages in the 'msg' folder
 add_message_files(
     FILES
-    Human.msg
-    HumanState.msg
-    Object.msg
+    PersonEntity.msg
+    PersonState.msg
+    ObjectEntity.msg
     ObjectState.msg
-    Place.msg
-    Robot.msg
+    PlaceEntity.msg
+    RobotEntity.msg
     RobotState.msg
     ImageStream.msg
 )
@@ -92,8 +92,13 @@ include_directories(
 link_directories(${catkin_LINK_DIRS})
 
 # ltm_plugins library
-add_library(ltm_samples__ltm_plugins src/ltm_plugins.cpp src/image_stream_plugin.cpp)
-add_dependencies(ltm_samples__ltm_plugins ${catkin_EXPORTED_TARGETS})
+add_library(ltm_samples__ltm_plugins
+        src/ltm_plugins.cpp
+        src/image_stream_plugin.cpp
+        src/people_entity_plugin.cpp
+        src/objects_entity_plugin.cpp
+)
+add_dependencies(ltm_samples__ltm_plugins ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 
 #############

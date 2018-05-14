@@ -48,21 +48,30 @@ plugins:
   entities:
     # List of names to consider. 
     # For each name, you must declare its class and ROS parameters.
-    include: ["people", "objects", "robot", "location"]
+    # include: ["people", "objects", "robot", "location"]
+    include: ["people", "objects"]
 
     # PeopleEntityPlugin
     people:
       class: "ltm_samples::PeopleEntityPlugin"
+      type: "people"
+      collection: "person_entities"
 
     # ObjectsEntityPlugin
     objects:
       class: "ltm_samples::ObjectsEntityPlugin"
+      type: "objects"
+      collection: "object_entities"
 
     # RobotEntityPlugin
     robot:
       class: "ltm_samples::RobotEntityPlugin"
+      type: "robot"
+      collection: "robot_entity"
 
     # LocationEntityPlugin
     location:
       class: "ltm_samples::LocationEntityPlugin"
+      type: "location"
+      collection: "location_entities"
 

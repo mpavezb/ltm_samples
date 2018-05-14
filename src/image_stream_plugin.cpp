@@ -4,7 +4,7 @@
 namespace ltm_samples
 {
     void ImageStreamPlugin::initialize(const std::string& param_ns, DBConnectionPtr ptr, std::string db_name) {
-        _log_prefix = "[LTM][ImageStream]: ";
+        _log_prefix = "[LTM][Image Stream]: ";
         ROS_DEBUG_STREAM(_log_prefix << "plugin initialized with ns: " << param_ns);
 
         // ROS Parameter Server

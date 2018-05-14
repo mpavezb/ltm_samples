@@ -22,11 +22,11 @@
     <class type="ltm_samples::ObjectsEntityPlugin" base_class_type="ltm::plugin::EntityBase">
         <description>This is an LTM plugin. It provides up to date information about objects.</description>
     </class>
-    <class type="ltm_samples::RobotEntityPlugin" base_class_type="ltm::plugin::EntityBase">
-        <description>This is an LTM plugin. It provides up to date information about the robot.</description>
-    </class>
-    <class type="ltm_samples::LocationEntityPlugin" base_class_type="ltm::plugin::EntityBase">
-        <description>This is an LTM plugin. It provides up to date information about locations.</description>
-    </class>
+    <!--<class type="ltm_samples::RobotEntityPlugin" base_class_type="ltm::plugin::EntityBase">-->
+        <!--<description>This is an LTM plugin. It provides up to date information about the robot.</description>-->
+    <!--</class>-->
+    <!--<class type="ltm_samples::LocationEntityPlugin" base_class_type="ltm::plugin::EntityBase">-->
+        <!--<description>This is an LTM plugin. It provides up to date information about locations.</description>-->
+    <!--</class>-->
 
 </library>

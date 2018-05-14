@@ -6,7 +6,7 @@ uint8 genre
 string country
 string city
 ltm/Date birthday
-ltm_samples/HumanState state
+ltm_samples/PersonState state
 sensor_msgs/Image face
 sensor_msgs/Image body
 
