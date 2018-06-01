@@ -33,18 +33,7 @@
         "children_locations": [],
         "children_areas": []
     },
-    "what": {
-        "features": ["A", "B"],
-        "feature_values": ["QWERTY", "12345"],
-        "streams": {
-            "imgs": "binary_data",
-            "sound": "binary_data"
-        },
-        "entities": {
-            "mike_01": "...",
-            "glass_23": "..."
-        }
-    },
+    "what": {},
     "relevance": {
         "historical": {
             "value": 1,

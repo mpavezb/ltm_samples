@@ -3,7 +3,7 @@
 
 import rospy
 from util import main, get_sub_machine
-import ltm.smach as ltm
+import ltm_addons.smach as ltm
 
 """
 Tree Structure

@@ -34,21 +34,13 @@ add_message_files(
     PlaceEntity.msg
     RobotEntity.msg
     RobotState.msg
-    ImageStream.msg
 )
 
 ## Generate services in the 'srv' folder
-add_service_files(
-    FILES
-    ImageStreamSrv.srv
-)
-
-## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
+# add_service_files(
+#     FILES
 # )
+
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(
@@ -93,10 +85,9 @@ link_directories(${catkin_LINK_DIRS})
 
 # ltm_plugins library
 add_library(ltm_samples__ltm_plugins
-        src/ltm_plugins.cpp
-        src/image_stream_plugin.cpp
-        src/people_entity_plugin.cpp
-        src/objects_entity_plugin.cpp
+    src/ltm_plugins.cpp
+    src/people_entity_plugin.cpp
+    src/objects_entity_plugin.cpp
 )
 add_dependencies(ltm_samples__ltm_plugins ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 

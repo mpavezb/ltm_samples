@@ -4,7 +4,7 @@
 import rospy
 import smach
 import smach_ros
-import ltm.smach as ltm
+import ltm_addons.smach as ltm
 from states import Talk, LookForPeople, AnalyzePeople
 
 

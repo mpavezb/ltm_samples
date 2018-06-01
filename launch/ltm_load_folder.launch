@@ -1,6 +1,6 @@
 <launch>
 
-    <node name="ltm_json_loader" type="json_loader" pkg="ltm" ns="robot" output="screen">
+    <node name="ltm_json_loader" type="json_loader" pkg="ltm_addons" ns="robot" output="screen">
         <param name="source" type="str" value="$(find ltm_samples)/samples/json/spr"/>
     </node>
 

@@ -1,5 +1,0 @@
-uint32 uid
-ltm_samples/ImageStream msg
----
-ltm_samples/ImageStream msg
-bool succeeded

@@ -4,7 +4,7 @@
 import rospy
 import smach
 from util import Dummy, main
-import ltm.smach as ltm
+import ltm_addons.smach as ltm
 
 """
 Tree Structure

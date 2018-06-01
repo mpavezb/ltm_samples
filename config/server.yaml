@@ -37,7 +37,7 @@ plugins:
 
     # ImageStream
     image:
-      class: "ltm_samples::ImageStreamPlugin"
+      class: "ltm_addons::ImageStreamPlugin"
       type: "images"
       collection: "image_streams"
       topic: "/robot/fake/sensors/camera/image_raw"

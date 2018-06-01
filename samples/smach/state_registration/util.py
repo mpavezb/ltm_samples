@@ -3,7 +3,7 @@
 
 import rospy
 import smach
-import ltm.smach as ltm
+import ltm_addons.smach as ltm
 
 
 class Dummy(smach.State):

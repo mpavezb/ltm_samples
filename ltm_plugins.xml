@@ -10,11 +10,6 @@
         <description>This is an LTM plugin. It provides the current location of the robot to the LTM server.</description>
     </class>
 
-    <!-- Stream plugins -->
-    <class type="ltm_samples::ImageStreamPlugin" base_class_type="ltm::plugin::StreamBase">
-        <description>This is an LTM plugin. It provides the last seen images to the LTM server.</description>
-    </class>
-
     <!-- Entity plugins -->
     <class type="ltm_samples::PeopleEntityPlugin" base_class_type="ltm::plugin::EntityBase">
         <description>This is an LTM plugin. It provides up to date information about people.</description>

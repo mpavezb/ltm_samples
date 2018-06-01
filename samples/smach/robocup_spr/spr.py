@@ -9,7 +9,7 @@ import smach_ros
 import crowd_analysis
 import riddle_game
 import blind_man_game
-import ltm.smach as ltm
+import ltm_addons.smach as ltm
 
 
 def get_instance():
