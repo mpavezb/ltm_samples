@@ -2,7 +2,7 @@
 #define LTM_SAMPLES_EMOTION_PLUGIN_H_
 
 #include <ros/ros.h>
-#include <ltm/plugins_base.h>
+#include <ltm/plugin/emotion_base.h>
 #include <ltm/GetEpisode.h>
 
 namespace ltm_samples

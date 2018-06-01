@@ -2,7 +2,7 @@
 #define LTM_SAMPLES_PEOPLE_ENTITY_PLUGIN_H_
 
 #include <ros/ros.h>
-#include <ltm/plugins_base.h>
+#include <ltm/plugin/entity_base.h>
 
 #include <ltm_samples/PersonEntity.h>
 #include <std_srvs/Empty.h>

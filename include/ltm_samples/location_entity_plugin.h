@@ -1,6 +1,6 @@
 #ifndef LTM_SAMPLES_LOCATION_ENTITY_PLUGIN_H_
 #define LTM_SAMPLES_LOCATION_ENTITY_PLUGIN_H_
-#include <ltm/plugins_base.h>
+#include <ltm/plugin/entity_base.h>
 #include <ros/ros.h>
 
 namespace ltm_samples

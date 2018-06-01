@@ -2,7 +2,7 @@
 #define LTM_SAMPLES_IMAGE_STREAM_PLUGIN_H_
 
 #include <ros/ros.h>
-#include <ltm/plugins_base.h>
+#include <ltm/plugin/stream_base.h>
 #include <ltm_samples/ImageStream.h>
 #include <ltm_samples/ImageStreamSrv.h>
 #include <sensor_msgs/Image.h>
