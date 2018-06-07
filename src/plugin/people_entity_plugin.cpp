@@ -1,4 +1,4 @@
-#include <ltm_samples/people_entity_plugin.h>
+#include <ltm_samples/plugin/people_entity_plugin.h>
 #include <ltm/parameter_server_wrapper.h>
 
 namespace ltm_samples

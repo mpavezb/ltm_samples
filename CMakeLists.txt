@@ -9,11 +9,12 @@ project(ltm_samples)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
 find_package(catkin REQUIRED
     roscpp
+    std_srvs
     std_msgs
     geometry_msgs
     sensor_msgs
-    cv_bridge
     message_generation
+    cv_bridge
     ltm
     pluginlib
 )
@@ -31,9 +32,9 @@ add_message_files(
     PersonState.msg
     ObjectEntity.msg
     ObjectState.msg
-    PlaceEntity.msg
-    RobotEntity.msg
-    RobotState.msg
+#    PlaceEntity.msg
+#    RobotEntity.msg
+#    RobotState.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -68,7 +69,7 @@ generate_messages(
 catkin_package(
     INCLUDE_DIRS ${CATKIN_DEVEL_PREFIX}/include include
     LIBRARIES
-    CATKIN_DEPENDS roscpp std_msgs geometry_msgs sensor_msgs message_runtime cv_bridge ltm
+    CATKIN_DEPENDS roscpp std_msgs std_srvs geometry_msgs sensor_msgs message_runtime cv_bridge ltm
     DEPENDS
 )
 
@@ -85,12 +86,14 @@ link_directories(${catkin_LINK_DIRS})
 
 # ltm_plugins library
 add_library(ltm_samples__ltm_plugins
-    src/ltm_plugins.cpp
-    src/people_entity_plugin.cpp
-    src/objects_entity_plugin.cpp
+    src/plugin/ltm_plugins.cpp
+    src/plugin/emotion_plugin.cpp
+    src/plugin/location_plugin.cpp
+    src/plugin/people_entity_plugin.cpp
+    src/plugin/objects_entity_plugin.cpp
 )
 add_dependencies(ltm_samples__ltm_plugins ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
+target_link_libraries(ltm_samples__ltm_plugins ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 #############
 ## Install ##

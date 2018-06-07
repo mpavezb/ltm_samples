@@ -19,7 +19,7 @@ timeout:      60.0
 # Each plugin must define the pluginlib class and its parameters
 plugins:
 
-  # Emotion Engine plugin
+  # Emotion Engine pluginsrc/plugins_manager.cpp
   emotion:
     # Class to load through pluginlib
     class: "ltm_samples::EmotionPlugin"
