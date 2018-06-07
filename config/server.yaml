@@ -49,7 +49,7 @@ plugins:
     # List of names to consider. 
     # For each name, you must declare its class and ROS parameters.
     # include: ["people", "objects", "robot", "location"]
-    include: ["people", "objects"]
+    include: ["people"]
 
     # PeopleEntityPlugin
     people:

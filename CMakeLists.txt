@@ -38,10 +38,10 @@ add_message_files(
 )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#     FILES
-# )
-
+add_service_files(
+    FILES
+    PersonEntitySrv.srv
+)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(
@@ -90,7 +90,9 @@ add_library(ltm_samples__ltm_plugins
     src/plugin/emotion_plugin.cpp
     src/plugin/location_plugin.cpp
     src/plugin/people_entity_plugin.cpp
-    src/plugin/objects_entity_plugin.cpp
+#    src/plugin/objects_entity_plugin.cpp
+#    src/plugin/location_entity_plugin.cpp
+#    src/plugin/robot_entity_plugin.cpp
 )
 add_dependencies(ltm_samples__ltm_plugins ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(ltm_samples__ltm_plugins ${catkin_LIBRARIES} ${Boost_LIBRARIES})
