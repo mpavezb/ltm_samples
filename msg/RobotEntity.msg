@@ -1,3 +1,4 @@
+# static fields
 uint32 uid
 string name
 string type
@@ -7,5 +8,8 @@ string[] components
 string[] skills
 ltm/Date birthday
 sensor_msgs/Image image
-ltm_samples/RobotState state
 
+# dynamic fields
+float32 battery_level
+bool is_broken
+string emotion

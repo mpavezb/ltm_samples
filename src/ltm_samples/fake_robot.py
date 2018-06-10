@@ -72,7 +72,7 @@ class Robot(object):
 
 
 def main():
-    rospy.init_node("ltm_fake_robot")
+    rospy.init_node("ltm_fake_entities")
     Robot()
 
     # Wait for ctrl-c to stop the application

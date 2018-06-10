@@ -1,3 +1,4 @@
+# static fields
 uint32 uid
 string name
 string last_name
@@ -6,9 +7,15 @@ uint8 genre
 string country
 string city
 ltm/Date birthday
-ltm_samples/PersonState state
 sensor_msgs/Image face
 sensor_msgs/Image body
+
+# dynamic fields
+string emotion
+string stance
+time last_seen
+time last_interacted
+
 
 
 # Available GENRES

@@ -29,18 +29,16 @@ catkin_python_setup()
 add_message_files(
     FILES
     PersonEntity.msg
-    PersonState.msg
     ObjectEntity.msg
-    ObjectState.msg
-#    PlaceEntity.msg
-#    RobotEntity.msg
-#    RobotState.msg
+    PlaceEntity.msg
+    RobotEntity.msg
 )
 
 ## Generate services in the 'srv' folder
 add_service_files(
     FILES
     PersonEntitySrv.srv
+    ObjectEntitySrv.srv
 )
 
 # Generate added messages and services with any dependencies listed here

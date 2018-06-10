@@ -1,0 +1,23 @@
+# entities to consider
+entities: ["person", "object"]
+
+person:
+  max_instances: 3
+  update_period: 1 # [seconds]
+
+  # fields to consider
+  initial_fields: ["uid", "name", "last_name"]
+  static_fields: ["age", "genre", "country", "city", "birthday"]
+  dynamic_fields: ["emotion", "stance", "last_seen", "last_interacted"]
+  ignore_fields: ["face", "body"]
+
+
+object:
+  max_instances: 5
+  update_period: 0.5 # [seconds]
+
+  # fields to consider
+  initial_fields: ["uid", "type", "name"]
+  static_fields: ["size"]
+  dynamic_fields: ["clean", "map_name", "location"]
+  ignore_fields: ["image"]

@@ -1,0 +1,7 @@
+<launch>
+
+    <node name="fake_short_term_memory" type="fake_stm" pkg="ltm_samples" ns="robot" output="screen">
+        <rosparam command="load" file="$(find ltm_samples)/config/fake_stm.yaml"/>
+    </node>
+
+</launch>

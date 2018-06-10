@@ -1,0 +1,5 @@
+uint32 uid
+ltm_samples/ObjectEntity msg
+---
+ltm_samples/ObjectEntity msg
+bool succeeded
