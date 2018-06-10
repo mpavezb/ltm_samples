@@ -21,6 +21,9 @@ namespace ltm_samples
 
         // ROS API
         std::string _log_prefix;
+        std::string _stm_topic;
+        ros::Subscriber _sub;
+
 
     public:
         PeopleEntityPlugin(){}
@@ -30,8 +33,12 @@ namespace ltm_samples
         // DB API
         MetadataPtr make_metadata(const EntityType &entity);
 
+        void callback(const EntityType &msg);
+
+        void build_null(EntityType &entity);
+
     public:
-        void initialize(const std::string &param_ns, DBConnectionPtr ptr, std::string db_name);
+        void initialize(const std::string &param_ns, DBConnectionPtr db_ptr, std::string db_name);
         void register_episode(uint32_t uid);
         void unregister_episode(uint32_t uid);
         void collect(uint32_t uid, ltm::What &msg, ros::Time _start, ros::Time _end);

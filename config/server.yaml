@@ -56,12 +56,15 @@ plugins:
       class: "ltm_samples::PeopleEntityPlugin"
       type: "people"
       collection: "person_entities"
+      topic: "/robot/fake_short_term_memory/person/updates"
+
 
     # ObjectsEntityPlugin
     objects:
       class: "ltm_samples::ObjectsEntityPlugin"
       type: "objects"
       collection: "object_entities"
+      topic: "/robot/fake_short_term_memory/object/updates"
 
     # RobotEntityPlugin
     robot:
