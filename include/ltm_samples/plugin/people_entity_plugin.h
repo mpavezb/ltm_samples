@@ -15,15 +15,27 @@ namespace ltm_samples
             public ltm::plugin::EntityDefault<ltm_samples::PersonEntity, ltm_samples::PersonEntitySrv>
     {
     private:
+        // Entity Types
         typedef ltm_samples::PersonEntity EntityType;
+        typedef warehouse_ros::MessageWithMetadata<EntityType> EntityWithMetadata;
+        typedef boost::shared_ptr<const EntityWithMetadata> EntityWithMetadataPtr;
+
+        // Log Message Types
+        typedef ltm::EntityLog LogType;
+        typedef warehouse_ros::MessageWithMetadata<LogType> LogWithMetadata;
+        typedef boost::shared_ptr<const LogWithMetadata> LogWithMetadataPtr;
 
         // plugin specific variables
+        EntityType _null_e;
 
         // ROS API
         std::string _log_prefix;
         std::string _stm_topic;
         ros::Subscriber _sub;
 
+        // timestamp registry
+        typedef std::pair<ros::Time, int32_t> RegisterItem;
+        std::vector<RegisterItem> _registry;
 
     public:
         PeopleEntityPlugin(){}
@@ -37,6 +49,10 @@ namespace ltm_samples
 
         void build_null(EntityType &entity);
 
+        template <typename T> bool field_equals(const T &A, const T &B);
+        template <typename T> void update_field(LogType& log, const std::string &field, T &curr_e, T &log_e,  const T &new_e, const T &null_e);
+
+
     public:
         void initialize(const std::string &param_ns, DBConnectionPtr db_ptr, std::string db_name);
         void register_episode(uint32_t uid);
@@ -44,6 +60,7 @@ namespace ltm_samples
         void collect(uint32_t uid, ltm::What &msg, ros::Time _start, ros::Time _end);
 
     };
+
 
 };
 #endif // LTM_SAMPLES_PEOPLE_ENTITY_PLUGIN_H_

@@ -1,5 +1,6 @@
 # static fields
 uint32 uid
+uint32 log_uid
 string type
 string name
 geometry_msgs/Point size
