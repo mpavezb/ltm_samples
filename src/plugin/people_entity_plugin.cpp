@@ -37,13 +37,13 @@ namespace ltm_samples
     }
 
     void PeopleEntityPlugin::register_episode(uint32_t uid) {
-        bool subscribe = this->ltm_register_episode(uid);
+        this->ltm_register_episode(uid);
+        // TODO: WE CAN USE THIS TO DELETE OLD TIMESTAMPS FROM THE REGISTRY
     }
 
     void PeopleEntityPlugin::unregister_episode(uint32_t uid) {
-        bool unsubscribe = this->ltm_unregister_episode(uid);
-
-        // TODO: CLEAN OLD ENTITIES FROM THE REGISTRY
+        this->ltm_unregister_episode(uid);
+        // TODO: WE CAN USE THIS TO DELETE OLD TIMESTAMPS FROM THE REGISTRY
     }
 
     void PeopleEntityPlugin::collect(uint32_t uid, ltm::What &msg, ros::Time _start, ros::Time _end) {
@@ -52,12 +52,36 @@ namespace ltm_samples
         // TODO: mutex (it is not required, because we are using a single-threaded Spinner for callbacks)
 
         // write entities matching initial and ending times.
-        int cnt = 0;
-        ltm::EntityRegister reg;
-        reg.type = ltm_get_type();
-        // TODO: compute this FROM THE REGISTRY BY TIMESTAMP
-        msg.entities.push_back(reg);
-        ROS_WARN_STREAM(_log_prefix << "Collected (" << cnt << ") people entities for episode " << uid << ".");
+        std::map<uint32_t, ltm::EntityRegister> episode_registry;
+        std::map<uint32_t, ltm::EntityRegister>::iterator m_it;
+
+        // COMPUTE EPISODE REGISTRY
+        int logcnt = 0;
+        Registry::const_iterator it;
+        for (it = _registry.lower_bound(RegisterItem(_start, 0, 0)); it != _registry.end(); ++it) {
+            if (it->timestamp > _end) break;
+
+            // entity is in registry
+            m_it = episode_registry.find(it->entity_uid);
+            if (m_it != episode_registry.end()) {
+                // update register
+                m_it->second.log_uids.push_back(it->log_uid);
+            } else {
+                // new register
+                ltm::EntityRegister reg;
+                reg.type = ltm_get_type();
+                reg.uid = it->entity_uid;
+                reg.log_uids.push_back(it->log_uid);
+                episode_registry.insert(std::pair<uint32_t, ltm::EntityRegister>(it->entity_uid, reg));
+            }
+            logcnt++;
+        }
+
+        // SAVE IT
+        ROS_WARN_STREAM(_log_prefix << "Collected (" << episode_registry.size() << ") people entities and (" << logcnt << ") logs for episode " << uid << ".");
+        for (m_it = episode_registry.begin(); m_it != episode_registry.end(); ++m_it) {
+            msg.entities.push_back(m_it->second);
+        }
 
         // unregister
         // TODO: redundant calls to (un)register methods?
@@ -71,6 +95,7 @@ namespace ltm_samples
     MetadataPtr PeopleEntityPlugin::make_metadata(const EntityType &entity) {
         MetadataPtr meta = this->ltm_create_metadata();
         meta->append("uid", (int) entity.uid);
+        meta->append("log_uid", (int) entity.log_uid);
         meta->append("name", entity.name);
         meta->append("last_name", entity.last_name);
         meta->append("age", entity.age);
@@ -92,9 +117,30 @@ namespace ltm_samples
         return meta;
     }
 
-    void PeopleEntityPlugin::callback(const EntityType& msg) {
-        ROS_WARN_STREAM("Received person msg: uid: " << msg.uid);
+    MetadataPtr PeopleEntityPlugin::make_log_metadata(const LogType &log) {
+        MetadataPtr meta = this->ltm_create_metadata();
+        // KEYS
+        meta->append("entity_uid", (int) log.entity_uid);
+        meta->append("log_uid", (int) log.log_uid);
 
+        // WHO
+        // meta->append("episode_uids", log.episode_uids);
+
+        // WHEN
+        double timestamp = log.timestamp.sec + log.timestamp.nsec * pow10(-9);
+        meta->append("timestamp", timestamp);
+        meta->append("prev_log", (int) log.prev_log);
+        meta->append("next_log", (int) log.next_log);
+
+        // WHAT
+        // meta->append("new_f", log.new_f);
+        // meta->append("updated_f", log.updated_f);
+        // meta->append("removed_f", log.removed_f);
+
+        return meta;
+    }
+
+    void PeopleEntityPlugin::callback(const EntityType& msg) {
         // KEYS
         LogType log;
         log.entity_uid = msg.uid;
@@ -147,13 +193,40 @@ namespace ltm_samples
         this->update_field<ros::Time>(log, "last_seen", curr.last_seen, diff.last_seen, msg.last_seen, _null_e.last_seen);
         this->update_field<ros::Time>(log, "last_interacted", curr.last_interacted, diff.last_interacted, msg.last_interacted, _null_e.last_interacted);
 
+        size_t n_added = log.new_f.size();
+        size_t n_updated = log.updated_f.size();
+        size_t n_removed = log.removed_f.size();
+        if ((n_added + n_updated + n_removed) == 0) {
+            ROS_DEBUG_STREAM(_log_prefix << "Received update for entity (" << msg.uid << ") does not apply any changes.");
+            return;
+        }
+        ROS_DEBUG_STREAM(_log_prefix << "Received update for entity (" << msg.uid << ") info: add=" << n_added << ", update=" << n_updated << ", removed=" << n_removed << ".");
+        ROS_DEBUG_STREAM_COND(n_added > 0, _log_prefix << " - ADD fields for (" << msg.uid << "): " << build_log_vector(log.new_f) << ".");
+        ROS_DEBUG_STREAM_COND(n_updated > 0, _log_prefix << " - UPDATE fields for (" << msg.uid << "): " << build_log_vector(log.updated_f) << ".");
+        ROS_DEBUG_STREAM_COND(n_removed > 0, _log_prefix << " - REMOVE fields for (" << msg.uid << "): " << build_log_vector(log.removed_f) << ".");
 
-        // TODO: INSERT DIFF INTO COLLECTION
-        // TODO: INSERT LOG INTO COLLECTION
-        // TODO: ADD/UPDATE ENTITY ON COLLECTION WITH THIS CHANGES
-        // TODO: ADD ENTITIES/LOG TO REGISTRY BY TIMESTAMP
+        // SAVE LOG AND DIFF INTO COLLECTION
+        this->ltm_log_insert(log, make_log_metadata(log));
+        this->ltm_diff_insert(diff, make_metadata(diff));
+
+        // UPDATE CURRENT ENTITY
+        this->ltm_update(curr.uid, curr, make_metadata(curr));
+
+        // ADD ENTITIES/LOG TO REGISTRY BY TIMESTAMP
+        // TODO: MUTEX HERE?
+        RegisterItem reg(log.timestamp, log.log_uid, log.entity_uid);
+        this->_registry.insert(reg);
     }
 
+    std::string PeopleEntityPlugin::build_log_vector(const std::vector<std::string> &v) {
+        std::string s = "[";
+        std::vector<std::string>::const_iterator it;
+        for (it = v.begin(); it != v.end(); ++it) {
+            s += *it + ", ";
+        }
+        s = (s.size() > 2) ? s = s.substr(0, s.size()-2) + "]" : "[]";
+        return s;
+    }
 
     template <typename T>
     bool PeopleEntityPlugin::field_equals(const T &A, const T &B) {
@@ -209,7 +282,7 @@ namespace ltm_samples
             }
         }
     }
-    
+
     void PeopleEntityPlugin::build_null(EntityType &entity) {
         entity.uid = 0;
         entity.name = "";

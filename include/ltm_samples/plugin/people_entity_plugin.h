@@ -10,6 +10,23 @@
 
 namespace ltm_samples
 {
+    struct RegisterItem {
+        ros::Time timestamp;
+        uint32_t log_uid;
+        uint32_t entity_uid;
+
+        RegisterItem(ros::Time timestamp, uint32_t log_uid, uint32_t entity_uid) {
+            this->timestamp = timestamp;
+            this->log_uid = log_uid;
+            this->entity_uid = entity_uid;
+        }
+
+    };
+    struct RegisterItemComp {
+        bool operator() (const RegisterItem& lhs, const RegisterItem& rhs) const
+        {return lhs.timestamp < rhs.timestamp;}
+    };
+
     class PeopleEntityPlugin :
             public ltm::plugin::EntityBase,
             public ltm::plugin::EntityDefault<ltm_samples::PersonEntity, ltm_samples::PersonEntitySrv>
@@ -33,17 +50,20 @@ namespace ltm_samples
         std::string _stm_topic;
         ros::Subscriber _sub;
 
-        // timestamp registry
-        typedef std::pair<ros::Time, int32_t> RegisterItem;
-        std::vector<RegisterItem> _registry;
+        // timestamp registry (keep sorted by timestamp)
+        typedef std::multiset<RegisterItem, RegisterItemComp> Registry;
+        Registry _registry;
 
     public:
         PeopleEntityPlugin(){}
         ~PeopleEntityPlugin();
 
     private:
-        // DB API
+
+        std::string build_log_vector(const std::vector<std::string> &v);
+
         MetadataPtr make_metadata(const EntityType &entity);
+        MetadataPtr make_log_metadata(const LogType &log);
 
         void callback(const EntityType &msg);
 
