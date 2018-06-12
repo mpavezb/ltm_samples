@@ -47,4 +47,8 @@ namespace ltm_samples
         initialized = true;
         return true;
     }
+
+    void LocationPlugin::reset() {
+
+    }
 }

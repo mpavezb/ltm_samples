@@ -49,4 +49,8 @@ namespace ltm_samples
         return true;
     }
 
+    void EmotionPlugin::reset() {
+
+    }
+
 }

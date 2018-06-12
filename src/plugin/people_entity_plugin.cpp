@@ -88,6 +88,15 @@ namespace ltm_samples
         unregister_episode(uid);
     }
 
+    void PeopleEntityPlugin::drop_db() {
+        this->_registry.clear();
+        this->ltm_drop_db();
+    }
+
+    void PeopleEntityPlugin::append_status(std::stringstream &status) {
+        status << this->ltm_get_status();
+    }
+
     // =================================================================================================================
     // Private API
     // =================================================================================================================

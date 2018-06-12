@@ -20,6 +20,8 @@ namespace ltm_samples
 
         void collect(uint32_t uid, ltm::EmotionalRelevance &msg);
 
+        void reset();
+
     private:
         ros::ServiceClient client;
         std::map<uint32_t, ros::Time> registry;

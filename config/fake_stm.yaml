@@ -1,9 +1,9 @@
 # entities to consider
-entities: ["person", "object"]
+entities: ["person"]
 
 person:
-  max_instances: 3
-  update_period: 1 # [seconds]
+  max_instances: 5
+  update_period: 0.2 # [seconds]
 
   # fields to consider
   initial_fields: ["uid", "name", "last_name"]
