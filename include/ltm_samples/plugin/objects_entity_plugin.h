@@ -7,13 +7,13 @@
 #include <ltm_samples/ObjectEntity.h>
 #include <std_srvs/Empty.h>
 
-#include <warehouse_ros/message_with_metadata.h>
-#include <warehouse_ros_mongo/database_connection.h>
+#include <ltm_db/message_with_metadata.h>
+#include <ltm_db_mongo/database_connection.h>
 
-typedef warehouse_ros::MessageCollection<ltm_samples::ObjectEntity> ObjectEntityCollection;
+typedef ltm_db::MessageCollection<ltm_samples::ObjectEntity> ObjectEntityCollection;
 typedef boost::shared_ptr<ObjectEntityCollection> ObjectEntityCollectionPtr;
 
-typedef warehouse_ros::MessageWithMetadata<ltm_samples::ObjectEntity> ObjectEntityWithMetadata;
+typedef ltm_db::MessageWithMetadata<ltm_samples::ObjectEntity> ObjectEntityWithMetadata;
 typedef boost::shared_ptr<const ObjectEntityWithMetadata> ObjectEntityWithMetadataPtr;
 
 

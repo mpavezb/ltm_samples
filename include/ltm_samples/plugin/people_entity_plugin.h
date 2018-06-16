@@ -34,12 +34,12 @@ namespace ltm_samples
     private:
         // Entity Types
         typedef ltm_samples::PersonEntity EntityType;
-        typedef warehouse_ros::MessageWithMetadata<EntityType> EntityWithMetadata;
+        typedef ltm_db::MessageWithMetadata<EntityType> EntityWithMetadata;
         typedef boost::shared_ptr<const EntityWithMetadata> EntityWithMetadataPtr;
 
         // Log Message Types
         typedef ltm::EntityLog LogType;
-        typedef warehouse_ros::MessageWithMetadata<LogType> LogWithMetadata;
+        typedef ltm_db::MessageWithMetadata<LogType> LogWithMetadata;
         typedef boost::shared_ptr<const LogWithMetadata> LogWithMetadataPtr;
 
         // plugin specific variables
