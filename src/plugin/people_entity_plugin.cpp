@@ -133,7 +133,7 @@ namespace ltm_samples
         meta->append("log_uid", (int) log.log_uid);
 
         // WHO
-        // meta->append("episode_uids", log.episode_uids);
+        meta->append("episode_uids", log.episode_uids);
 
         // WHEN
         double timestamp = log.timestamp.sec + log.timestamp.nsec * pow10(-9);
@@ -142,9 +142,9 @@ namespace ltm_samples
         meta->append("next_log", (int) log.next_log);
 
         // WHAT
-        // meta->append("new_f", log.new_f);
-        // meta->append("updated_f", log.updated_f);
-        // meta->append("removed_f", log.removed_f);
+        meta->append("new_f", log.new_f);
+        meta->append("updated_f", log.updated_f);
+        meta->append("removed_f", log.removed_f);
 
         return meta;
     }
