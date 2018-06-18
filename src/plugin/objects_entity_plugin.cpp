@@ -1,5 +1,5 @@
 #include <ltm_samples/plugin/objects_entity_plugin.h>
-#include <ltm/parameter_server_wrapper.h>
+#include <ltm/util/parameter_server_wrapper.h>
 
 namespace ltm_samples
 {
@@ -9,7 +9,7 @@ namespace ltm_samples
         ROS_DEBUG_STREAM(_log_prefix << "plugin initialized with ns: " << param_ns);
 
         // ROS Parameter Server
-        ltm::ParameterServerWrapper psw("~");
+        ltm::util::ParameterServerWrapper psw("~");
         psw.getParameter(param_ns + "type", _type, "images");
         psw.getParameter(param_ns + "collection", _collection_name, "image_streams");
 

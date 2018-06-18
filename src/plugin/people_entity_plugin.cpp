@@ -1,5 +1,5 @@
 #include <ltm_samples/plugin/people_entity_plugin.h>
-#include <ltm/parameter_server_wrapper.h>
+#include <ltm/util/parameter_server_wrapper.h>
 #include <sensor_msgs/Image.h>
 
 /**
@@ -19,7 +19,7 @@ namespace ltm_samples
 
         build_null(_null_e);
 
-        ltm::ParameterServerWrapper psw("~");
+        ltm::util::ParameterServerWrapper psw("~");
         psw.getParameter(param_ns + "topic", _stm_topic, "/robot/fake_short_term_memory/person/updates");
 
         ros::NodeHandle priv("~");
