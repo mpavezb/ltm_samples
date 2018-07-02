@@ -89,8 +89,13 @@ namespace ltm_samples
     }
 
     void PeopleEntityPlugin::drop_db() {
-        this->_registry.clear();
+        this->reset(this->ltm_get_db_name());
         this->ltm_drop_db();
+    }
+
+    void PeopleEntityPlugin::reset(const std::string &db_name) {
+        this->_registry.clear();
+        this->ltm_resetup_db(db_name);
     }
 
     void PeopleEntityPlugin::append_status(std::stringstream &status) {

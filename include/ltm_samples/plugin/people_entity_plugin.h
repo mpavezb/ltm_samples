@@ -79,6 +79,7 @@ namespace ltm_samples
         void unregister_episode(uint32_t uid);
         void collect(uint32_t uid, ltm::What &msg, ros::Time _start, ros::Time _end);
         void drop_db();
+        void reset(const std::string &db_name);
         void append_status(std::stringstream &status);
     };
 
