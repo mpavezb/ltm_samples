@@ -116,6 +116,7 @@ namespace ltm_samples
         meta->append("birthday", birthday.str());
         meta->append("emotion", entity.emotion);
         meta->append("stance", entity.stance);
+        meta->append("is_nerd", entity.is_nerd);
 
         double last_seen = entity.last_seen.sec + entity.last_seen.nsec * pow10(-9);
         meta->append("last_seen", last_seen);
@@ -181,6 +182,7 @@ namespace ltm_samples
             curr.body = curr_with_md->body;
             curr.emotion = curr_with_md->emotion;
             curr.stance = curr_with_md->stance;
+            curr.is_nerd = curr_with_md->is_nerd;
             curr.last_seen = curr_with_md->last_seen;
             curr.last_interacted = curr_with_md->last_interacted;
         }
@@ -199,6 +201,7 @@ namespace ltm_samples
         this->update_field<sensor_msgs::Image>(log, "body", curr.body, diff.body, msg.body, _null_e.body);
         this->update_field<std::string>(log, "emotion", curr.emotion, diff.emotion, msg.emotion, _null_e.emotion);
         this->update_field<std::string>(log, "stance", curr.stance, diff.stance, msg.stance, _null_e.stance);
+        this->update_field<uint8_t>(log, "is_nerd", curr.is_nerd, diff.is_nerd, msg.is_nerd, _null_e.is_nerd);
         this->update_field<ros::Time>(log, "last_seen", curr.last_seen, diff.last_seen, msg.last_seen, _null_e.last_seen);
         this->update_field<ros::Time>(log, "last_interacted", curr.last_interacted, diff.last_interacted, msg.last_interacted, _null_e.last_interacted);
 
@@ -307,6 +310,7 @@ namespace ltm_samples
         entity.face = sensor_msgs::Image();
         entity.emotion = "";
         entity.stance = "";
+        entity.is_nerd = 0;
         entity.last_seen = ros::Time(0);
         entity.last_interacted = ros::Time(0);
     }

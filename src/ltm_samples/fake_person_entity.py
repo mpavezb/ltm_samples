@@ -38,6 +38,7 @@ class PersonEntityFaker(object):
         person.stance = random.choice(self.stances)
         person.last_seen = rospy.Time.now()
         person.last_interacted = rospy.Time.now()
+        person.is_nerd = (random.randint(0, 1) == 0)
         return person
 
     @staticmethod
@@ -59,6 +60,7 @@ class PersonEntityFaker(object):
         person.stance = ""
         person.last_seen = rospy.Time(0)
         person.last_interacted = rospy.Time(0)
+        person.is_nerd = False
         return person
 
     @staticmethod
