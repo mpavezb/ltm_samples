@@ -6,7 +6,7 @@ namespace ltm_samples
         log_prefix = "[LTM][Location]: ";
         ROS_DEBUG_STREAM(log_prefix << "Initializing with ns: " << param_ns);
         ros::NodeHandle priv("~");
-        client = priv.serviceClient<ltm::GetEpisode>("/robot/fake/get_location");
+        client = priv.serviceClient<ltm::GetEpisodes>("/robot/fake/get_location");
 
         initialized = false;
         reinitialize();
@@ -30,9 +30,9 @@ namespace ltm_samples
             ROS_WARN_STREAM(log_prefix << "Required service is not present (" << client.getService() << ").");
             return;
         }
-        ltm::GetEpisode srv;
+        ltm::GetEpisodes srv;
         if (client.call(srv)) {
-            msg = srv.response.episode.where;
+            msg = srv.response.episodes[0].where;
         } else {
             ROS_WARN_STREAM(log_prefix << "service call failed.(" << client.getService() << ").");
         }

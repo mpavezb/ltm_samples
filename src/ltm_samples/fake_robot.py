@@ -24,8 +24,8 @@ class Robot(object):
         self.relevance_emotional_software_version = rospy.get_param("~relevance/emotional/software_version", "1.0.0")
 
         # ROS API
-        rospy.Service('~get_location', GetEpisode, self.service_get_where)
-        rospy.Service('~get_emotion', GetEpisode, self.service_get_emotion)
+        rospy.Service('~get_location', GetEpisodes, self.service_get_where)
+        rospy.Service('~get_emotion', GetEpisodes, self.service_get_emotion)
 
     def service_get_where(self, req):
         rospy.loginfo("Generating a fake location of the robot.")
@@ -44,9 +44,9 @@ class Robot(object):
         # return response
         episode = Episode()
         episode.where = where
-        res = GetEpisodeResponse()
+        res = GetEpisodesResponse()
         res.succeeded = True
-        res.episode = episode
+        res.episodes.append(episode)
         return res
 
     def service_get_emotion(self, req):
@@ -65,9 +65,9 @@ class Robot(object):
         # return response
         episode = Episode()
         episode.relevance.emotional = emotions
-        res = GetEpisodeResponse()
+        res = GetEpisodesResponse()
         res.succeeded = True
-        res.episode = episode
+        res.episodes.append(episode)
         return res
 
 

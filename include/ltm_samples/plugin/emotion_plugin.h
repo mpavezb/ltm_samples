@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include <ltm/plugin/emotion_base.h>
-#include <ltm/GetEpisode.h>
+#include <ltm/GetEpisodes.h>
 
 namespace ltm_samples
 {
