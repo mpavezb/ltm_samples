@@ -1,6 +1,6 @@
 {
     "uid": 2,
-    "type": 2,
+    "type": 1,
     "parent_id": 1,
     "children_ids": [3],
     "tags": ["robocup", "stage_1", "test"],

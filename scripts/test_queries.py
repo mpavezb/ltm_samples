@@ -3,20 +3,12 @@
 __author__ = 'Matías Pavez'
 __email__ = 'matias.pavez@ing.uchile.cl'
 
+import rospkg
 import rospy
 import unittest
 
-from std_srvs.srv import Empty
-from ltm.msg import Episode
 from ltm.srv import *
-from ltm_samples.msg import PersonEntity
-
-# Tests:
-# - eq, ne: string, int, double, bool
-# - gt, lt, gte, lte
-# - in, nin
-# - AND operations
-#
+from ltm_addons.json_loader import JsonLoader
 
 
 class LTMInterface(object):
@@ -26,7 +18,8 @@ class LTMInterface(object):
         self.add_episode_client = rospy.ServiceProxy('/robot/ltm/add_episode', AddEpisode)
         self.query_client = rospy.ServiceProxy('/robot/ltm/query', QueryServer)
         self.get_episodes_client = rospy.ServiceProxy('/robot/ltm/get_episodes', GetEpisodes)
-        self.drop_db_client = rospy.ServiceProxy('/robot/ltm/drop_db', Empty)
+        self.drop_db_client = rospy.ServiceProxy('/robot/ltm/drop_db', DropDB)
+        self.switch_db_client = rospy.ServiceProxy('/robot/ltm/switch_db', SwitchDB)
 
     def setup(self):
         # Wait for ROS services
@@ -34,6 +27,7 @@ class LTMInterface(object):
         self.query_client.wait_for_service()
         self.get_episodes_client.wait_for_service()
         self.drop_db_client.wait_for_service()
+        self.switch_db_client.wait_for_service()
 
     def query_episodes(self, json):
         query = QueryServerRequest()
@@ -52,8 +46,16 @@ class LTMInterface(object):
         return resp.uids
 
     def drop_database(self):
-        self.drop_db_client()
-        return
+        req = DropDBRequest()
+        req.html_is_a_real_programming_language = False
+        req.i_understand_this_is_a_dangerous_operation = True
+        self.drop_db_client(req)
+
+    def switch_database(self):
+        self.switch_db_client(db_name="test")
+
+    def insert_episode(self, episode):
+        self.insert_episode(episode=episode)
 
 
 class TestEpisodeQueries(unittest.TestCase):
@@ -63,80 +65,99 @@ class TestEpisodeQueries(unittest.TestCase):
         ltm = LTMInterface()
         ltm.setup()
 
-        # TODO: enable testing mode.. do not drop user database!.. just use 'ltm_test_db' MongoDB
+        # Create an empty test DB
+        ltm.switch_database()
         ltm.drop_database()
 
-        # insert episodes
+        # insert episodes from JSON
+        rospack = rospkg.RosPack()
+        pkg_path = rospack.get_path('ltm_samples')
+        loader = JsonLoader(source=pkg_path + "/samples/json/spr", ns="/robot/")
+        loader.load()
 
     @classmethod
     def tearDownClass(cls):
-        # clean LTM server
+        # # clean LTM server
+        # ltm.drop_database()
         pass
 
     def setUp(self):
-        pass
+        self.ltm = LTMInterface()
 
     def tearDown(self):
         pass
 
-    def test_equal_uint32(self):
-        ltm = LTMInterface()
-        json = '{"uid": 0}'
-        uids = ltm.query_episodes(json)
-        # self.assertEqual(len(uids), 1, 'Duplicate or missing uid')
-        # self.assertEqual(uids[0], 0)
+    def test_eq_int(self):
+        uids = self.ltm.query_episodes('{"uid": 0}')
+        self.assertEqual(len(uids), 0)
 
-    def test_equal_string(self):
-        ltm = LTMInterface()
+        uids = self.ltm.query_episodes('{"uid": 2}')
+        self.assertEqual(len(uids), 1)
 
-        json = '{"where_frame_id": "/map"}'
-        uids = ltm.query_episodes(json)
-        # self.assertNotEqual(len(uids), 0)
+    def test_eq_str(self):
+        uids = self.ltm.query_episodes('{"where_frame_id": "/map"}')
+        self.assertEqual(len(uids), 11)
 
-        json = '{"where_frame_id": "unknown"}'
-        uids = ltm.query_episodes(json)
-        # self.assertEqual(len(uids), 0)
+        uids = self.ltm.query_episodes('{"where_frame_id": "unknown"}')
+        self.assertEqual(len(uids), 0)
 
-    def test_equal_bool(self):
+    def test_eq_bool(self):
         pass
 
-    def test_invalid(self):
+    def test_eq_double(self):
         pass
 
     def test_str_array(self):
-        ltm = LTMInterface()
-        json = '{"children_tags": "analyze_crowd"}'
-        uids = ltm.query_episodes(json)
-        # self.assertNotEqual(len(uids), 0)
+        uids = self.ltm.query_episodes('{"children_tags": "analyze_crowd"}')
+        self.assertEqual(len(uids), 5)
 
     def test_int_array(self):
-        ltm = LTMInterface()
-        json = '{"children_ids": 1679966153}'
-        uids = ltm.query_episodes(json)
-        # self.assertNotEqual(len(uids), 0)
+        uids = self.ltm.query_episodes('{"children_ids": 5}')
+        self.assertEqual(len(uids), 1)
 
     def test_in_int(self):
-        ltm = LTMInterface()
-        json = '{"relevance_emotional_emotion": { "$in": [0, 3, 2] } }'
-        uids = ltm.query_episodes(json)
+        uids = self.ltm.query_episodes('{"relevance_emotional_emotion": { "$in": [0, 3, 2] } }')
+        self.assertEqual(len(uids), 4)
 
     def test_in_str(self):
-        ltm = LTMInterface()
-        json = '{"where_location": { "$in": ["kitchen", "hallway"] } }'
-        uids = ltm.query_episodes(json)
+        uids = self.ltm.query_episodes('{"where_location": { "$in": ["living room", "lobby"] } }')
+        self.assertEqual(len(uids), 5)
 
     def test_gt_lt_double(self):
-        ltm = LTMInterface()
-        json = '{"relevance_emotional_value": { "$gt": 0.19 } }'
-        uids = ltm.query_episodes(json)
+        uids = self.ltm.query_episodes('{"relevance_emotional_value": { "$gt": 0.25 } }')
+        self.assertEqual(len(uids), 6)
 
-        ltm = LTMInterface()
-        json = '{"relevance_emotional_value": { "$lt": 0.2 } }'
-        uids = ltm.query_episodes(json)
+        uids = self.ltm.query_episodes('{"relevance_emotional_value": { "$lt": 0.2 } }')
+        self.assertEqual(len(uids), 1)
 
-        ltm = LTMInterface()
-        json = '{"relevance_emotional_value": { "$gt": 0.19, "$lt": 0.2 } }'
-        uids = ltm.query_episodes(json)
+    def test_logical_and(self):
+        uids = self.ltm.query_episodes('{"relevance_emotional_value": { "$gt": 0.2, "$lt": 0.3 } }')
+        self.assertEqual(len(uids), 4)
+
+    def test_logical_or(self):
+        json_1 = '{"relevance_emotional_value": { "$gt": 0.35 } }'
+        json_2 = '{"children_tags": "analyze_crowd"}'
+        json = '{"$or": [ ' + json_1 + ', ' + json_2 + ']}'
+        uids = self.ltm.query_episodes(json)
+        self.assertEqual(len(uids), 7)
+
+    def test_complex(self):
+        json_1 = '"$or": [ {"children_ids": 2}, {"uid": { "$gte": 4, "$lte": 10 } } ]'
+        json_2 = '"relevance_emotional_value": { "$gt": 0.25 }'
+        uids = self.ltm.query_episodes('{' + json_1 + ', ' + json_2 + '}')
+        self.assertEqual(len(uids), 3)
+
+    def test_invalid_json(self):
+        pass
+
+    def test_bad_fields(self):
+        pass
+
+    def test_invalid_operator(self):
+        pass
+
+    def test_invalid_characters(self):
+        pass
 
 
 class TestPeopleQueries(unittest.TestCase):

@@ -1,10 +1,9 @@
 {
-    "uid": 0,
-    "type": 2,
+    "uid": 100,
+    "type": 1,
     "parent_id": 0,
     "children_ids": [1],
     "tags": ["robocup"],
-    "children_tags": [],
     "info": "~",
     "when": "~",
     "where": "~",

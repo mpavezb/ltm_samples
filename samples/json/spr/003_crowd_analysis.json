@@ -1,6 +1,6 @@
 {
     "uid": 3,
-    "type": 2,
+    "type": 1,
     "parent_id": 2,
     "children_ids": [4, 8],
     "tags": ["crowd_analysis"],
