@@ -38,10 +38,10 @@ class EntityManager(object):
     def add_entity(self, uid):
         generated = self.faker.generate()
         msg = self.faker.null()
-        msg.uid = uid
+        msg.meta.uid = uid
         log_str = "["
         for field in self.initial_f:
-            if field == "uid":
+            if field == "meta":
                 continue
             value = generated.__getattribute__(field)
             if isinstance(value, (basestring, int, float)):
@@ -61,16 +61,16 @@ class EntityManager(object):
 
         # update and publish
         msg.__setattr__(field, value)
-        self.registry[msg.uid] = msg
+        self.registry[msg.meta.uid] = msg
         self.publisher.publish(self.faker.normalize(msg))
 
         # LOGGING
         log_str = ""
         if isinstance(value, (basestring, int, float)):
             log_str = log_str + "=" + str(value)
-        rospy.loginfo("{" + self.ns + "}: add static field (" + str(msg.uid) + "): " + field + log_str)
+        rospy.loginfo("{" + self.ns + "}: add static field (" + str(msg.meta.uid) + "): " + field + log_str)
         if not remaining:
-            rospy.loginfo("{" + self.ns + "}: All static fields are set for (" + str(msg.uid) + ").")
+            rospy.loginfo("{" + self.ns + "}: All static fields are set for (" + str(msg.meta.uid) + ").")
 
     def generate_dynamic_field(self, msg):
         # get field and remove from remaining
@@ -83,7 +83,7 @@ class EntityManager(object):
 
         # update and publish
         msg.__setattr__(field, value)
-        self.registry[msg.uid] = msg
+        self.registry[msg.meta.uid] = msg
         self.publisher.publish(self.faker.normalize(msg))
 
         # LOGGING
@@ -92,9 +92,9 @@ class EntityManager(object):
             log_str = log_str + "=" + str(value)
 
         if was_null:
-            rospy.loginfo("{" + self.ns + "}: add dynamic field (" + str(msg.uid) + "): " + field + log_str)
+            rospy.loginfo("{" + self.ns + "}: add dynamic field (" + str(msg.meta.uid) + "): " + field + log_str)
         else:
-            rospy.loginfo("{" + self.ns + "}: modify dynamic field (" + str(msg.uid) + "): " + field + log_str)
+            rospy.loginfo("{" + self.ns + "}: modify dynamic field (" + str(msg.meta.uid) + "): " + field + log_str)
 
     def timer_callback(self, event):
         # modify this entity

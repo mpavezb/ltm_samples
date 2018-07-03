@@ -22,7 +22,7 @@ class PersonEntityFaker(object):
 
     def generate(self):
         person = PersonEntity()
-        person.uid = random.randint(0, 10)
+        person.meta.uid = random.randint(0, 10)
         person.name = str(self.fake.first_name())
         person.last_name = str(self.fake.last_name())
         person.genre = random.randint(0, 1)
@@ -44,7 +44,7 @@ class PersonEntityFaker(object):
     @staticmethod
     def null():
         person = PersonEntity()
-        person.uid = 0
+        person.meta.uid = 0
         person.name = ""
         person.last_name = ""
         person.genre = 2

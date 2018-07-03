@@ -1,6 +1,6 @@
+ltm/EntityMetadata meta
+
 # static fields
-uint32 uid
-uint32 log_uid
 string name
 string last_name
 uint8 age

@@ -108,8 +108,8 @@ namespace ltm_samples
 
     MetadataPtr PeopleEntityPlugin::make_metadata(const EntityType &entity) {
         MetadataPtr meta = this->ltm_create_metadata();
-        meta->append("uid", (int) entity.uid);
-        meta->append("log_uid", (int) entity.log_uid);
+        meta->append("uid", (int) entity.meta.uid);
+        meta->append("log_uid", (int) entity.meta.log_uid);
         meta->append("name", entity.name);
         meta->append("last_name", entity.last_name);
         meta->append("age", entity.age);
@@ -158,7 +158,7 @@ namespace ltm_samples
     void PeopleEntityPlugin::callback(const EntityType& msg) {
         // KEYS
         LogType log;
-        log.entity_uid = msg.uid;
+        log.entity_uid = msg.meta.uid;
         log.log_uid = (uint32_t) this->ltm_reserve_log_uid();
 
         // WHEN
@@ -172,9 +172,9 @@ namespace ltm_samples
         // TODO: WE CAN USE A CACHE FOR RECENT ENTITIES
         EntityType curr;
         EntityWithMetadataPtr curr_with_md;
-        curr.uid = msg.uid;
-        curr.log_uid = 0;
-        bool uid_exists = this->ltm_get(msg.uid, curr_with_md);
+        curr.meta.uid = msg.meta.uid;
+        curr.meta.log_uid = 0;
+        bool uid_exists = this->ltm_get(msg.meta.uid, curr_with_md);
         if (uid_exists) {
             curr.name = curr_with_md->name;
             curr.last_name = curr_with_md->last_name;
@@ -193,8 +193,8 @@ namespace ltm_samples
         }
 
         EntityType diff;
-        diff.uid = msg.uid;
-        diff.log_uid = log.log_uid;
+        diff.meta.uid = msg.meta.uid;
+        diff.meta.log_uid = log.log_uid;
         this->update_field<std::string>(log, "name", curr.name, diff.name, msg.name, _null_e.name);
         this->update_field<std::string>(log, "last_name", curr.last_name, diff.last_name, msg.last_name, _null_e.last_name);
         this->update_field<uint8_t>(log, "age", curr.age, diff.age, msg.age, _null_e.age);
@@ -214,20 +214,20 @@ namespace ltm_samples
         size_t n_updated = log.updated_f.size();
         size_t n_removed = log.removed_f.size();
         if ((n_added + n_updated + n_removed) == 0) {
-            ROS_DEBUG_STREAM(_log_prefix << "Received update for entity (" << msg.uid << ") does not apply any changes.");
+            ROS_DEBUG_STREAM(_log_prefix << "Received update for entity (" << msg.meta.uid << ") does not apply any changes.");
             return;
         }
-        ROS_DEBUG_STREAM(_log_prefix << "Received update for entity (" << msg.uid << ") info: add=" << n_added << ", update=" << n_updated << ", removed=" << n_removed << ".");
-        ROS_DEBUG_STREAM_COND(n_added > 0, _log_prefix << " - ADD fields for (" << msg.uid << "): " << build_log_vector(log.new_f) << ".");
-        ROS_DEBUG_STREAM_COND(n_updated > 0, _log_prefix << " - UPDATE fields for (" << msg.uid << "): " << build_log_vector(log.updated_f) << ".");
-        ROS_DEBUG_STREAM_COND(n_removed > 0, _log_prefix << " - REMOVE fields for (" << msg.uid << "): " << build_log_vector(log.removed_f) << ".");
+        ROS_DEBUG_STREAM(_log_prefix << "Received update for entity (" << msg.meta.uid << ") info: add=" << n_added << ", update=" << n_updated << ", removed=" << n_removed << ".");
+        ROS_DEBUG_STREAM_COND(n_added > 0, _log_prefix << " - ADD fields for (" << msg.meta.uid << "): " << build_log_vector(log.new_f) << ".");
+        ROS_DEBUG_STREAM_COND(n_updated > 0, _log_prefix << " - UPDATE fields for (" << msg.meta.uid << "): " << build_log_vector(log.updated_f) << ".");
+        ROS_DEBUG_STREAM_COND(n_removed > 0, _log_prefix << " - REMOVE fields for (" << msg.meta.uid << "): " << build_log_vector(log.removed_f) << ".");
 
         // SAVE LOG AND DIFF INTO COLLECTION
         this->ltm_log_insert(log, make_log_metadata(log));
         this->ltm_diff_insert(diff, make_metadata(diff));
 
         // UPDATE CURRENT ENTITY
-        this->ltm_update(curr.uid, curr, make_metadata(curr));
+        this->ltm_update(curr.meta.uid, curr, make_metadata(curr));
 
         // ADD ENTITIES/LOG TO REGISTRY BY TIMESTAMP
         // TODO: MUTEX HERE?
@@ -301,7 +301,8 @@ namespace ltm_samples
     }
 
     void PeopleEntityPlugin::build_null(EntityType &entity) {
-        entity.uid = 0;
+        entity.meta.uid = 0;
+        entity.meta.log_uid = 0;
         entity.name = "";
         entity.last_name = "";
         entity.genre = 2;

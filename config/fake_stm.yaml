@@ -6,7 +6,7 @@ person:
   update_period: 0.2 # [seconds]
 
   # fields to consider
-  initial_fields: ["uid", "name", "last_name"]
+  initial_fields: ["meta", "name", "last_name"]
   static_fields: ["age", "genre", "country", "city", "birthday"]
   dynamic_fields: ["emotion", "stance", "last_seen", "last_interacted"]
   ignore_fields: ["face", "body"]
@@ -17,7 +17,7 @@ object:
   update_period: 0.5 # [seconds]
 
   # fields to consider
-  initial_fields: ["uid", "type", "name"]
+  initial_fields: ["meta", "type", "name"]
   static_fields: ["size"]
   dynamic_fields: ["clean", "map_name", "location"]
   ignore_fields: ["image"]
