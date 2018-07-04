@@ -43,8 +43,11 @@ class LTMInterface(object):
         req.i_understand_this_is_a_dangerous_operation = True
         self.drop_db_client(req)
 
-    def switch_database(self):
+    def switch_to_test_database(self):
         self.switch_db_client(db_name="test")
+
+    def switch_to_default_database(self):
+        self.switch_db_client(db_name="ltm_db")
 
     def load_fixtures(self):
         # Load episodes from JSON
@@ -72,8 +75,7 @@ class StreamInterface(object):
         query.semantic_type = "images"
         query.json = json
         resp = self.query_client(query)
-        # return resp.streams[0].uids
-        return None
+        return resp.streams[0].uids
 
     def insert(self, stream):
         req = ImageStreamSrvRequest()
@@ -132,12 +134,17 @@ class SetupCases(object):
         stream.setup()
 
         # Create an empty test DB
-        ltm.switch_database()
+        ltm.switch_to_test_database()
         ltm.drop_database()
 
         # load fixtures
         ltm.load_fixtures()
         stream.load_fixtures()
+
+    @staticmethod
+    def destroy():
+        ltm = LTMInterface()
+        ltm.switch_to_default_database()
 
 
 class TestEpisodeQueries(unittest.TestCase):
@@ -278,22 +285,20 @@ class TestStreamQueries(unittest.TestCase):
 
     def test_find_by_uid(self):
         uids = self.ltm.query('{"uid": 5}')
-        # self.assertEqual(len(uids), 1)
+        self.assertEqual(len(uids), 1)
 
         uids = self.ltm.query('{"uid": 0}')
-        # self.assertEqual(len(uids), 0)
-        pass
+        self.assertEqual(len(uids), 0)
 
     def test_find_by_images(self):
         uids = self.ltm.query('{"images": 0}')
-        # self.assertEqual(len(uids), 0)
+        self.assertEqual(len(uids), 0)
 
         uids = self.ltm.query('{"images": 5}')
-        # self.assertEqual(len(uids), 1)
+        self.assertEqual(len(uids), 1)
 
         uids = self.ltm.query('{"images": { "$gt": 3 }}')
-        # self.assertEqual(len(uids), 2)
-        pass
+        self.assertEqual(len(uids), 2)
 
 
 class TestPeopleQueries(unittest.TestCase):
