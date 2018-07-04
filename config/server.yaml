@@ -39,7 +39,7 @@ plugins:
     image:
       class: "ltm_addons::ImageStreamPlugin"
       type: "images"
-      collection: "image_streams"
+      collection: "images"
       topic: "/robot/fake/sensors/camera/image_raw"
       buffer_frequency: 3.0
       buffer_size: 100
@@ -55,7 +55,7 @@ plugins:
     people:
       class: "ltm_samples::PeopleEntityPlugin"
       type: "people"
-      collection: "person_entities"
+      collection: "people"
       topic: "/robot/fake_short_term_memory/person/updates"
 
 
@@ -63,18 +63,18 @@ plugins:
     objects:
       class: "ltm_samples::ObjectsEntityPlugin"
       type: "objects"
-      collection: "object_entities"
+      collection: "objects"
       topic: "/robot/fake_short_term_memory/object/updates"
 
     # RobotEntityPlugin
     robot:
       class: "ltm_samples::RobotEntityPlugin"
       type: "robot"
-      collection: "robot_entity"
+      collection: "robots"
 
     # LocationEntityPlugin
     location:
       class: "ltm_samples::LocationEntityPlugin"
       type: "location"
-      collection: "location_entities"
+      collection: "locations"
 

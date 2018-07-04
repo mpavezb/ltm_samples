@@ -6,6 +6,7 @@
 #include <ltm/plugin/entity_default.h>
 #include <ltm_samples/PersonEntity.h>
 #include <ltm_samples/PersonEntitySrv.h>
+#include <ltm/QueryServer.h>
 #include <std_srvs/Empty.h>
 
 namespace ltm_samples
@@ -74,10 +75,12 @@ namespace ltm_samples
 
 
     public:
+        std::string get_type();
         void initialize(const std::string &param_ns, DBConnectionPtr db_ptr, std::string db_name);
         void register_episode(uint32_t uid);
         void unregister_episode(uint32_t uid);
         void collect(uint32_t uid, ltm::What &msg, ros::Time _start, ros::Time _end);
+        void query(const std::string &json, ltm::QueryServer::Response &res);
         void drop_db();
         void reset(const std::string &db_name);
         void append_status(std::stringstream &status);

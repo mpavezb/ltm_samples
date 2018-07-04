@@ -13,6 +13,10 @@ namespace ltm_samples
     // Public API
     // =================================================================================================================
 
+    std::string PeopleEntityPlugin::get_type() {
+        return this->ltm_get_type();
+    }
+
     void PeopleEntityPlugin::initialize(const std::string &param_ns, DBConnectionPtr db_ptr, std::string db_name) {
         _log_prefix = "[LTM][People Entity]: ";
         ROS_DEBUG_STREAM(_log_prefix << "plugin initialized with ns: " << param_ns);
@@ -86,6 +90,10 @@ namespace ltm_samples
         // unregister
         // TODO: redundant calls to (un)register methods?
         unregister_episode(uid);
+    }
+
+    void PeopleEntityPlugin::query(const std::string &json, ltm::QueryServer::Response &res) {
+        this->ltm_query(json, res);
     }
 
     void PeopleEntityPlugin::drop_db() {
