@@ -8,6 +8,7 @@
 #include <ltm_samples/PersonEntitySrv.h>
 #include <ltm/QueryServer.h>
 #include <std_srvs/Empty.h>
+#include <ltm/plugin/entity_util.h>
 
 namespace ltm_samples
 {
@@ -60,19 +61,8 @@ namespace ltm_samples
         ~PeopleEntityPlugin();
 
     private:
-
-        std::string build_log_vector(const std::vector<std::string> &v);
-
-        MetadataPtr make_metadata(const EntityType &entity);
-        MetadataPtr make_log_metadata(const LogType &log);
-
         void callback(const EntityType &msg);
-
         void build_null(EntityType &entity);
-
-        template <typename T> bool field_equals(const T &A, const T &B);
-        template <typename T> void update_field(LogType& log, const std::string &field, T &curr_e, T &log_e,  const T &new_e, const T &null_e);
-
 
     public:
         std::string get_type();
@@ -80,10 +70,12 @@ namespace ltm_samples
         void register_episode(uint32_t uid);
         void unregister_episode(uint32_t uid);
         void collect(uint32_t uid, ltm::What &msg, ros::Time _start, ros::Time _end);
-        void query(const std::string &json, ltm::QueryServer::Response &res);
+        void query(const std::string &json, ltm::QueryServer::Response &res, bool trail);
+        void update(const EntityType &msg);
         void drop_db();
         void reset(const std::string &db_name);
         void append_status(std::stringstream &status);
+        MetadataPtr make_metadata(const EntityType &entity);
     };
 
 

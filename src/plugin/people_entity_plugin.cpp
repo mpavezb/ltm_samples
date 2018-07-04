@@ -9,6 +9,8 @@
 
 namespace ltm_samples
 {
+    using namespace ltm::plugin;
+
     // =================================================================================================================
     // Public API
     // =================================================================================================================
@@ -92,8 +94,8 @@ namespace ltm_samples
         unregister_episode(uid);
     }
 
-    void PeopleEntityPlugin::query(const std::string &json, ltm::QueryServer::Response &res) {
-        this->ltm_query(json, res);
+    void PeopleEntityPlugin::query(const std::string &json, ltm::QueryServer::Response &res, bool trail) {
+        this->ltm_query(json, res, trail);
     }
 
     void PeopleEntityPlugin::drop_db() {
@@ -110,14 +112,8 @@ namespace ltm_samples
         status << this->ltm_get_status();
     }
 
-    // =================================================================================================================
-    // Private API
-    // =================================================================================================================
-
     MetadataPtr PeopleEntityPlugin::make_metadata(const EntityType &entity) {
-        MetadataPtr meta = this->ltm_create_metadata();
-        meta->append("uid", (int) entity.meta.uid);
-        meta->append("log_uid", (int) entity.meta.log_uid);
+        MetadataPtr meta = this->ltm_create_metadata(entity);
         meta->append("name", entity.name);
         meta->append("last_name", entity.last_name);
         meta->append("age", entity.age);
@@ -140,30 +136,15 @@ namespace ltm_samples
         return meta;
     }
 
-    MetadataPtr PeopleEntityPlugin::make_log_metadata(const LogType &log) {
-        MetadataPtr meta = this->ltm_create_metadata();
-        // KEYS
-        meta->append("entity_uid", (int) log.entity_uid);
-        meta->append("log_uid", (int) log.log_uid);
+    // =================================================================================================================
+    // Private API
+    // =================================================================================================================
 
-        // WHO
-        meta->append("episode_uids", log.episode_uids);
-
-        // WHEN
-        double timestamp = log.timestamp.sec + log.timestamp.nsec * pow10(-9);
-        meta->append("timestamp", timestamp);
-        meta->append("prev_log", (int) log.prev_log);
-        meta->append("next_log", (int) log.next_log);
-
-        // WHAT
-        meta->append("new_f", log.new_f);
-        meta->append("updated_f", log.updated_f);
-        meta->append("removed_f", log.removed_f);
-
-        return meta;
+    void PeopleEntityPlugin::callback(const EntityType &msg) {
+        this->update(msg);
     }
 
-    void PeopleEntityPlugin::callback(const EntityType& msg) {
+    void PeopleEntityPlugin::update(const EntityType& msg) {
         // KEYS
         LogType log;
         log.entity_uid = msg.meta.uid;
@@ -181,7 +162,7 @@ namespace ltm_samples
         EntityType curr;
         EntityWithMetadataPtr curr_with_md;
         curr.meta.uid = msg.meta.uid;
-        curr.meta.log_uid = 0;
+        curr.meta.log_uid = log.log_uid;
         bool uid_exists = this->ltm_get(msg.meta.uid, curr_with_md);
         if (uid_exists) {
             curr.name = curr_with_md->name;
@@ -203,20 +184,20 @@ namespace ltm_samples
         EntityType diff;
         diff.meta.uid = msg.meta.uid;
         diff.meta.log_uid = log.log_uid;
-        this->update_field<std::string>(log, "name", curr.name, diff.name, msg.name, _null_e.name);
-        this->update_field<std::string>(log, "last_name", curr.last_name, diff.last_name, msg.last_name, _null_e.last_name);
-        this->update_field<uint8_t>(log, "age", curr.age, diff.age, msg.age, _null_e.age);
-        this->update_field<uint8_t>(log, "genre", curr.genre, diff.genre, msg.genre, _null_e.genre);
-        this->update_field<std::string>(log, "country", curr.country, diff.country, msg.country, _null_e.country);
-        this->update_field<std::string>(log, "city", curr.city, diff.city, msg.city, _null_e.city);
-        this->update_field<ltm::Date>(log, "birthday", curr.birthday, diff.birthday, msg.birthday, _null_e.birthday);
-        this->update_field<sensor_msgs::Image>(log, "face", curr.face, diff.face, msg.face, _null_e.face);
-        this->update_field<sensor_msgs::Image>(log, "body", curr.body, diff.body, msg.body, _null_e.body);
-        this->update_field<std::string>(log, "emotion", curr.emotion, diff.emotion, msg.emotion, _null_e.emotion);
-        this->update_field<std::string>(log, "stance", curr.stance, diff.stance, msg.stance, _null_e.stance);
-        this->update_field<uint8_t>(log, "is_nerd", curr.is_nerd, diff.is_nerd, msg.is_nerd, _null_e.is_nerd);
-        this->update_field<ros::Time>(log, "last_seen", curr.last_seen, diff.last_seen, msg.last_seen, _null_e.last_seen);
-        this->update_field<ros::Time>(log, "last_interacted", curr.last_interacted, diff.last_interacted, msg.last_interacted, _null_e.last_interacted);
+        entity::update_field<std::string>(log, "name", curr.name, diff.name, msg.name, _null_e.name);
+        entity::update_field<std::string>(log, "last_name", curr.last_name, diff.last_name, msg.last_name, _null_e.last_name);
+        entity::update_field<uint8_t>(log, "age", curr.age, diff.age, msg.age, _null_e.age);
+        entity::update_field<uint8_t>(log, "genre", curr.genre, diff.genre, msg.genre, _null_e.genre);
+        entity::update_field<std::string>(log, "country", curr.country, diff.country, msg.country, _null_e.country);
+        entity::update_field<std::string>(log, "city", curr.city, diff.city, msg.city, _null_e.city);
+        entity::update_field<ltm::Date>(log, "birthday", curr.birthday, diff.birthday, msg.birthday, _null_e.birthday);
+        entity::update_field<sensor_msgs::Image>(log, "face", curr.face, diff.face, msg.face, _null_e.face);
+        entity::update_field<sensor_msgs::Image>(log, "body", curr.body, diff.body, msg.body, _null_e.body);
+        entity::update_field<std::string>(log, "emotion", curr.emotion, diff.emotion, msg.emotion, _null_e.emotion);
+        entity::update_field<std::string>(log, "stance", curr.stance, diff.stance, msg.stance, _null_e.stance);
+        entity::update_field<uint8_t>(log, "is_nerd", curr.is_nerd, diff.is_nerd, msg.is_nerd, _null_e.is_nerd);
+        entity::update_field<ros::Time>(log, "last_seen", curr.last_seen, diff.last_seen, msg.last_seen, _null_e.last_seen);
+        entity::update_field<ros::Time>(log, "last_interacted", curr.last_interacted, diff.last_interacted, msg.last_interacted, _null_e.last_interacted);
 
         size_t n_added = log.new_f.size();
         size_t n_updated = log.updated_f.size();
@@ -226,86 +207,21 @@ namespace ltm_samples
             return;
         }
         ROS_DEBUG_STREAM(_log_prefix << "Received update for entity (" << msg.meta.uid << ") info: add=" << n_added << ", update=" << n_updated << ", removed=" << n_removed << ".");
-        ROS_DEBUG_STREAM_COND(n_added > 0, _log_prefix << " - ADD fields for (" << msg.meta.uid << "): " << build_log_vector(log.new_f) << ".");
-        ROS_DEBUG_STREAM_COND(n_updated > 0, _log_prefix << " - UPDATE fields for (" << msg.meta.uid << "): " << build_log_vector(log.updated_f) << ".");
-        ROS_DEBUG_STREAM_COND(n_removed > 0, _log_prefix << " - REMOVE fields for (" << msg.meta.uid << "): " << build_log_vector(log.removed_f) << ".");
+        ROS_DEBUG_STREAM_COND(n_added > 0, _log_prefix << " - ADD fields for (" << msg.meta.uid << "): " << entity::build_log_vector(log.new_f) << ".");
+        ROS_DEBUG_STREAM_COND(n_updated > 0, _log_prefix << " - UPDATE fields for (" << msg.meta.uid << "): " << entity::build_log_vector(log.updated_f) << ".");
+        ROS_DEBUG_STREAM_COND(n_removed > 0, _log_prefix << " - REMOVE fields for (" << msg.meta.uid << "): " << entity::build_log_vector(log.removed_f) << ".");
 
         // SAVE LOG AND DIFF INTO COLLECTION
-        this->ltm_log_insert(log, make_log_metadata(log));
-        this->ltm_diff_insert(diff, make_metadata(diff));
+        this->ltm_log_insert(log);
+        this->ltm_diff_insert(diff);
 
         // UPDATE CURRENT ENTITY
-        this->ltm_update(curr.meta.uid, curr, make_metadata(curr));
+        this->ltm_update(curr.meta.uid, curr);
 
         // ADD ENTITIES/LOG TO REGISTRY BY TIMESTAMP
         // TODO: MUTEX HERE?
         RegisterItem reg(log.timestamp, log.log_uid, log.entity_uid);
         this->_registry.insert(reg);
-    }
-
-    std::string PeopleEntityPlugin::build_log_vector(const std::vector<std::string> &v) {
-        std::string s = "[";
-        std::vector<std::string>::const_iterator it;
-        for (it = v.begin(); it != v.end(); ++it) {
-            s += *it + ", ";
-        }
-        s = (s.size() > 2) ? s = s.substr(0, s.size()-2) + "]" : "[]";
-        return s;
-    }
-
-    template <typename T>
-    bool PeopleEntityPlugin::field_equals(const T &A, const T &B) {
-        return A == B;
-    }
-
-    //explicit specialization for ltm::Date
-    template <>
-    bool PeopleEntityPlugin::field_equals<ltm::Date>(const ltm::Date &A, const ltm::Date &B) {
-        return A.day == B.day && A.month == B.month && A.year == B.year;
-    }
-
-    //explicit specialization for ros::Time
-    template <>
-    bool PeopleEntityPlugin::field_equals<ros::Time>(const ros::Time &A, const ros::Time &B) {
-        return A.sec == B.sec && A.nsec == B.nsec;
-    }
-
-    //explicit specialization for sensor_msgs::Image
-    template <>
-    bool PeopleEntityPlugin::field_equals<sensor_msgs::Image>(const sensor_msgs::Image &A, const sensor_msgs::Image &B) {
-        return A.header.stamp.sec == B.header.stamp.sec
-               && A.header.stamp.nsec == B.header.stamp.nsec
-               && A.header.frame_id == B.header.frame_id
-               && A.header.seq == B.header.seq
-               && A.height == B.height
-               && A.width == B.width
-               && A.step == B.step;
-    }
-
-    template <typename T>
-    void PeopleEntityPlugin::update_field(ltm_samples::PeopleEntityPlugin::LogType &log, const std::string &field, T &curr_e,
-                                          T &log_e, const T &new_e, const T &null_e) {
-        if (field_equals<T>(new_e, null_e)) {            // new field is null
-            if (field_equals<T>(curr_e, null_e)) {       // - and curr field is null     ---> NO CHANGES
-                log_e = null_e;
-            } else {                                     // - and curr field is not null ---> REMOVE FIELD
-                curr_e = null_e;
-                log_e = new_e;
-                log.removed_f.push_back(field);
-            }
-        } else {                                         // new field is not null
-            if (field_equals<T>(curr_e, null_e)) {       // - and curr field is null     ---> NEW FIELD
-                curr_e = new_e;
-                log_e = new_e;
-                log.new_f.push_back(field);
-            } else if (field_equals<T>(curr_e, new_e)) { // - and curr field is the same ---> NO CHANGES
-                log_e = null_e;
-            } else {                                     // - and fields are different   ---> UPDATE FIELD
-                curr_e = new_e;
-                log_e = new_e;
-                log.updated_f.push_back(field);
-            }
-        }
     }
 
     void PeopleEntityPlugin::build_null(EntityType &entity) {

@@ -45,7 +45,6 @@ class Robot(object):
         episode = Episode()
         episode.where = where
         res = GetEpisodesResponse()
-        res.succeeded = True
         res.episodes.append(episode)
         return res
 
@@ -66,7 +65,6 @@ class Robot(object):
         episode = Episode()
         episode.relevance.emotional = emotions
         res = GetEpisodesResponse()
-        res.succeeded = True
         res.episodes.append(episode)
         return res
 

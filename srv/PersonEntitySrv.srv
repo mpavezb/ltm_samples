@@ -1,5 +1,13 @@
-uint32 uid
-ltm_samples/PersonEntity msg
+# Overview
+# ========
+# This .srv is used for Add, Get and Delete Operations
+# - add   : Request only uses msgs field. Response is empty.
+# - delete: Request only uses uids field. Response is empty.
+# - get   : Requesr uses uids and stamps. Response contains msgs.
+# ---------------------------------------------------------------
+uint32[] uids # Entity uids to get/delete.
+time[] stamps # Timestamps to get entities from.
+ltm_samples/PersonEntity[] msgs # Used for Add service
 ---
-ltm_samples/PersonEntity msg
-bool succeeded
+ltm_samples/PersonEntity[] msgs # Used for Get service
+uint32[] not_found # not found uids.

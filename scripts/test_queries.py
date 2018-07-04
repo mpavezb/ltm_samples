@@ -79,7 +79,7 @@ class StreamInterface(object):
 
     def insert(self, stream):
         req = ImageStreamSrvRequest()
-        req.msg = stream
+        req.msgs.append(stream)
         self.add_client(req)
 
     def load_fixtures(self):
@@ -97,13 +97,21 @@ class PeopleInterface(object):
 
     def __init__(self):
         self.add_client = rospy.ServiceProxy('/robot/ltm/entity/people/add', PersonEntitySrv)
-        # self.get_client = rospy.ServiceProxy('/robot/ltm/entity/people/get', PersonEntitySrv)
+        self.get_client = rospy.ServiceProxy('/robot/ltm/entity/people/get', PersonEntitySrv)
         self.query_client = rospy.ServiceProxy('/robot/ltm/db/query', QueryServer)
 
     def setup(self):
         self.add_client.wait_for_service()
-        # self.get_client.wait_for_service()
+        self.get_client.wait_for_service()
         self.query_client.wait_for_service()
+
+    def get(self, uids, stamps=None):
+        req = PersonEntitySrvRequest()
+        req.uids = uids
+        if stamps:
+            req.stamps = stamps
+        resp = self.get_client(req)
+        return resp
 
     def query(self, json):
         query = QueryServerRequest()
@@ -113,9 +121,17 @@ class PeopleInterface(object):
         resp = self.query_client(query)
         return resp.entities[0].uids
 
+    def query_log(self, json):
+        query = QueryServerRequest()
+        query.target = "entity_trail"
+        query.semantic_type = "people"
+        query.json = json
+        resp = self.query_client(query)
+        return resp.entities[0].uids, resp.entities_trail[0].uids
+
     def insert(self, person):
         req = PersonEntitySrvRequest()
-        req.msg = person
+        req.msgs.append(person)
         self.add_client(req)
 
     def load_fixtures(self):
@@ -305,13 +321,33 @@ class TestPeopleQueries(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        SetupCases().execute()
+        # SetupCases().execute()
+        ltm = LTMInterface()
+        ltm.switch_to_default_database()
 
     def setUp(self):
         self.ltm = PeopleInterface()
 
     def tearDown(self):
         pass
+
+    def test_get_by_uid(self):
+        def get_and_print(id, time):
+            resp = self.ltm.get([id], [time])
+            msg = resp.msgs[0]
+            msg.body = None
+            msg.face = None
+            print "\n\n"
+            print "----------------------------------------------------"
+            print "Entity: id=" + str(id) + ", time: " + str(time.secs)
+            print "----------------------------------------------------"
+            print msg
+            print "----------------------------------------------------"
+
+        get_and_print(4, rospy.Time(0))
+        get_and_print(4, rospy.Time(153072842))
+        get_and_print(4, rospy.Time.now())
+
 
     # def test_find_by_uid(self):
     #     uids = self.ltm.query('{"uid": 5}')
