@@ -35,8 +35,8 @@ namespace ltm_samples
     {
     private:
         // Entity Types
-        typedef ltm_samples::PersonEntity EntityType;
-        typedef ltm_db::MessageWithMetadata<EntityType> EntityWithMetadata;
+        typedef ltm_samples::PersonEntity EntityMsg;
+        typedef ltm_db::MessageWithMetadata<EntityMsg> EntityWithMetadata;
         typedef boost::shared_ptr<const EntityWithMetadata> EntityWithMetadataPtr;
 
         // Log Message Types
@@ -45,7 +45,7 @@ namespace ltm_samples
         typedef boost::shared_ptr<const LogWithMetadata> LogWithMetadataPtr;
 
         // plugin specific variables
-        EntityType _null_e;
+        EntityMsg _null_e;
 
         // ROS API
         std::string _log_prefix;
@@ -61,8 +61,8 @@ namespace ltm_samples
         ~PeopleEntityPlugin();
 
     private:
-        void callback(const EntityType &msg);
-        void build_null(EntityType &entity);
+        void callback(const EntityMsg &msg);
+        void build_null(EntityMsg &entity);
 
     public:
         std::string get_type();
@@ -71,11 +71,11 @@ namespace ltm_samples
         void unregister_episode(uint32_t uid);
         void collect(uint32_t uid, ltm::What &msg, ros::Time _start, ros::Time _end);
         void query(const std::string &json, ltm::QueryServer::Response &res, bool trail);
-        void update(const EntityType &msg);
+        void update(const EntityMsg &msg);
         void drop_db();
         void reset(const std::string &db_name);
         void append_status(std::stringstream &status);
-        MetadataPtr make_metadata(const EntityType &entity);
+        MetadataPtr make_metadata(const EntityMsg &entity);
     };
 
 

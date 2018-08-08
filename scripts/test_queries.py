@@ -195,14 +195,6 @@ class TestEpisodeQueries(unittest.TestCase):
         uids = self.ltm.query('{"where.frame_id": "unknown"}')
         self.assertEqual(len(uids), 0)
 
-    def test_eq_bool(self):
-        # TODO
-        pass
-
-    def test_eq_double(self):
-        # TODO
-        pass
-
     def test_str_array(self):
         uids = self.ltm.query('{"children_tags": "analyze_crowd"}')
         self.assertEqual(len(uids), 5)
@@ -263,6 +255,14 @@ class TestEpisodeQueries(unittest.TestCase):
         q2 = '{"when.end": { $gt: ' + init + ', $lt: ' + end + '}}'
         uids = self.ltm.query('{ "$or": [ ' + q1 + ', ' + q2 + ']}')
         self.assertEqual(len(uids), 4)
+
+    def test_eq_bool(self):
+        # TODO
+        pass
+
+    def test_eq_double(self):
+        # TODO
+        pass
 
     def test_invalid_json(self):
         # TODO

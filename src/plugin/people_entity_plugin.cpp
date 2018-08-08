@@ -112,7 +112,7 @@ namespace ltm_samples
         status << this->ltm_get_status();
     }
 
-    MetadataPtr PeopleEntityPlugin::make_metadata(const EntityType &entity) {
+    MetadataPtr PeopleEntityPlugin::make_metadata(const EntityMsg &entity) {
         MetadataPtr meta = this->ltm_create_metadata(entity);
         meta->append("name", entity.name);
         meta->append("last_name", entity.last_name);
@@ -140,11 +140,11 @@ namespace ltm_samples
     // Private API
     // =================================================================================================================
 
-    void PeopleEntityPlugin::callback(const EntityType &msg) {
+    void PeopleEntityPlugin::callback(const EntityMsg &msg) {
         this->update(msg);
     }
 
-    void PeopleEntityPlugin::update(const EntityType& msg) {
+    void PeopleEntityPlugin::update(const EntityMsg& msg) {
         // KEYS
         LogType log;
         log.entity_uid = msg.meta.uid;
@@ -159,7 +159,7 @@ namespace ltm_samples
         this->ltm_get_registry(log.episode_uids);
 
         // TODO: WE CAN USE A CACHE FOR RECENT ENTITIES
-        EntityType curr;
+        EntityMsg curr;
         EntityWithMetadataPtr curr_with_md;
         curr.meta.uid = msg.meta.uid;
         curr.meta.log_uid = log.log_uid;
@@ -181,7 +181,7 @@ namespace ltm_samples
             curr.last_interacted = curr_with_md->last_interacted;
         }
 
-        EntityType diff;
+        EntityMsg diff;
         diff.meta.uid = msg.meta.uid;
         diff.meta.log_uid = log.log_uid;
         entity::update_field<std::string>(log, "name", curr.name, diff.name, msg.name, _null_e.name);
@@ -224,7 +224,7 @@ namespace ltm_samples
         this->_registry.insert(reg);
     }
 
-    void PeopleEntityPlugin::build_null(EntityType &entity) {
+    void PeopleEntityPlugin::build_null(EntityMsg &entity) {
         entity.meta.uid = 0;
         entity.meta.log_uid = 0;
         entity.name = "";
