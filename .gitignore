@@ -1,4 +1,6 @@
 
+*.log
+
 # Created by https://www.gitignore.io/api/c++,ros,video,python,images,jetbrains
 
 ### C++ ###
