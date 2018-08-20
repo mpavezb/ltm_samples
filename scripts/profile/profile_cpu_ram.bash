@@ -58,7 +58,7 @@ top -b -p "${ltm_pid}","${mongo_pid}" -d "${sample_period}" -o COMMAND | # sort 
 	awk '{print $12, $9, $10; system("")}'          | # name,cpu,ram columns
 	sed -u 'N;s/\n/ /'                              | # merge 2 (ONLY TWO) lines into one
 	awk '{print strftime("%y-%m-%d_%H-%M-%S"), $0; system("")}' | # append timestamp
-	tee -a "${log_file_last}" #"${log_file}" # show on screen and save
+	tee -a "${log_file_last}" "${log_file}" # show on screen and save
 
 
 # OBS: cant use the 'ps' command as it only shows average usage by each 

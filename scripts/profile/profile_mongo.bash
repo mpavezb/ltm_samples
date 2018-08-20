@@ -30,6 +30,6 @@ rm -f "${log_file_last}"
 # gather information
 mongo --quiet ltm_db "${THIS_DIR}"/profile_mongo.js | # ejecute mongo analyzer
 	tee -a "${log_file_last}"                | # save to last file
-	# tee -a "${log_file}"                     | # save to timestamped file
+	tee -a "${log_file}"                     | # save to timestamped file
 	grep -E "iteration|time" --line-buffered | # display it and timestamp
 	sed -u 'N;s/\n/ /'                         # in one line

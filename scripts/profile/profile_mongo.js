@@ -137,8 +137,8 @@ function get_entities_stats(db, entities, json) {
 }
 
 // params
-var sample_frequency = 2; // [Hz]
-var times = 10;
+var sample_frequency = 0.5; // [Hz]
+var times = 10000;
 
 // connection
 var conn = new Mongo();
@@ -195,11 +195,11 @@ while (cnt < times) {
 
 	// streams
 	json.streams = {};
-	get_streams_stats(db, streams, json.streams);
+	// get_streams_stats(db, streams, json.streams);
 
 	// entities
 	json.entities = {};
-	get_entities_stats(db, entities, json.entities);
+	// get_entities_stats(db, entities, json.entities);
 
 	printjson(json);
 	if (cnt < times) print(",");
