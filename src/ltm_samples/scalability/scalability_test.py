@@ -28,16 +28,15 @@ class ScalabilityTester(object):
 
         self.output_folder = rospkg.RosPack().get_path('ltm_samples') + "/scripts/profile/results/"
         self.file_suffix = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        # self.output_filename = self.output_folder + "ltm_scalability_ouput_" + self.file_suffix + ".csv"
-        # self.config_filename = self.output_folder + "ltm_scalability_config_" + self.file_suffix + ".txt"
-        self.output_filename = self.output_folder + "ltm_scalability_ouput.csv"
-        self.config_filename = self.output_folder + "ltm_scalability_config.txt"
+        self.output_filename = self.output_folder + "ltm_scalability_ouput_" + self.file_suffix + ".csv"
+        self.config_filename = self.output_folder + "ltm_scalability_config_" + self.file_suffix + ".txt"
+        # self.output_filename = self.output_folder + "ltm_scalability_ouput.csv"
+        # self.config_filename = self.output_folder + "ltm_scalability_config.txt"
         self.ns = "/robot/ltm/"
-        self.insertion_times = 10
-        self.search_times = 10
+        self.insertion_times = 100
+        self.search_times = 100
         # self.sleep_time = 0.0 # [seconds]
-        self.checkpoints = self.generate_checkpoints(10000)
-        self.checkpoints = self.generate_checkpoints(1000000)
+        self.checkpoints = self.generate_checkpoints(max_value=1000000, max_delta=10000)
 
         self.mongo = pymongo.MongoClient()
         self.db = self.mongo[self.test_db_name]
@@ -169,15 +168,19 @@ class ScalabilityTester(object):
         self.insert_ep(ep09)
         self.insert_ep(ep10)
 
-    def generate_checkpoints(self, max_value):
+    def generate_checkpoints(self, max_value, max_delta):
         start = 10
         delta = 10
         value = start
+        keep_increasing_delta = True
         checkpoints = []
         while value <= max_value:
             checkpoints.append(value)
-            if value >= 10*delta:
-                delta = 10*delta
+            if keep_increasing_delta and value >= 10*delta:
+                if (10*delta <= max_delta):
+                    delta = 10*delta
+                else:
+                    keep_increasing_delta = False
             value += delta
         return checkpoints
 
