@@ -45,6 +45,7 @@
     <exec_depend>message_runtime</exec_depend>
     <exec_depend>video_stream_opencv</exec_depend>
     <exec_depend>image_view</exec_depend>
+    <exec_depend>python-psutil</exec_depend>
 
     <!-- test dependencies -->
     <!--  -->
