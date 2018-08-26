@@ -74,8 +74,11 @@ class ScalabilityTester(object):
                 self.suite.status()
 
                 # do measurements
-                simple_avg = self.measure_search(queries.search_simple)
-                complex_avg = self.measure_search(queries.search_complex)
+                r1 = self.measure_search(queries.field_equals_int)
+                r2 = self.measure_search(queries.array_contains_field)
+                r3 = self.measure_search(queries.field_in_array)
+                r4 = self.measure_search(queries.logical_or)
+                r5 = self.measure_search(queries.nested_or_and)
 
                 insertion_avg = int(round(insertion_sum / (0.0 + insertion_count)))
                 insertion_sum = 0.0
@@ -93,8 +96,11 @@ class ScalabilityTester(object):
                 row.append(it)                # episodes
                 row.append(dt_total_seconds)  # elapsed seconds
                 row.append(insertion_avg)     # average insertion time 
-                row.append(simple_avg)        # average simple search time
-                row.append(complex_avg)       # average complex search time
+                row.append(r1)
+                row.append(r2)
+                row.append(r3)
+                row.append(r4)
+                row.append(r5)
                 row.append(ep_count)          # MongoDB: episode count (documents)
                 row.append(stats['dataSize'])    # MongoDB: dataSize
                 row.append(stats['indexSize'])   # MongoDB: indexSize

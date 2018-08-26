@@ -20,10 +20,10 @@ class BenchmarkSuite(object):
         
         self.output_folder = rospkg.RosPack().get_path('ltm_samples') + "/scripts/profile/results/"
         file_suffix = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        # self.output_filename = self.output_folder + test_name + "_" + file_suffix + "_ouput" + ".csv"
-        # self.config_filename = self.output_folder + test_name + "_" + file_suffix + "_config" + ".txt"
-        self.output_filename = self.output_folder + test_name + "_ouput.csv"
-        self.config_filename = self.output_folder + test_name + "_config.txt"
+        self.output_filename = self.output_folder + test_name + "_" + file_suffix + "_ouput" + ".csv"
+        self.config_filename = self.output_folder + test_name + "_" + file_suffix + "_config" + ".txt"
+        # self.output_filename = self.output_folder + test_name + "_ouput.csv"
+        # self.config_filename = self.output_folder + test_name + "_config.txt"
         self.db_name = "test_" + test_name + "_db"
 
         self.faker = EpisodeFaker()
