@@ -92,16 +92,16 @@ class ScalabilityTester(object):
                 dt_total_seconds = int(round(dt_total.total_seconds()))
                 row_count += 1
                 row = list()
-                row.append(row_count)         # row counter
-                row.append(it)                # episodes
-                row.append(dt_total_seconds)  # elapsed seconds
-                row.append(insertion_avg)     # average insertion time 
+                row.append(row_count)            # row counter
+                row.append(it)                   # episodes
+                row.append(dt_total_seconds)     # elapsed seconds
+                row.append(insertion_avg)        # average insertion time 
                 row.append(r1)
                 row.append(r2)
                 row.append(r3)
                 row.append(r4)
                 row.append(r5)
-                row.append(ep_count)          # MongoDB: episode count (documents)
+                row.append(ep_count)             # MongoDB: episode count (documents)
                 row.append(stats['dataSize'])    # MongoDB: dataSize
                 row.append(stats['indexSize'])   # MongoDB: indexSize
                 row.append(stats['storageSize']) # MongoDB: storageSize
