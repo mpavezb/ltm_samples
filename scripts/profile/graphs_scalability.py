@@ -103,16 +103,16 @@ def graph_operation_times(extended=False):
     ax.plot(episodes, time_q3_avg, 'C2.-',  markersize=6, linewidth=1, label=u'Consulta Q3')
     ax.plot(episodes, time_q4_avg, 'C3.-',  markersize=6, linewidth=1, label=u'Consulta Q4')
     ax.plot(episodes, time_q5_avg, 'C4.-',  markersize=6, linewidth=1, label=u'Consulta Q5')
-    suffix = "extended_"
+    suffix = "_extended"
     if not extended:
         plt.ylim([-0.1, 2.0])
         suffix = ""
 
     ax.legend(loc='upper left', shadow=True)
-    plt.xlabel('episodios [miles]')
-    plt.ylabel('tiempo [s]')
+    plt.xlabel('Episodios [miles]')
+    plt.ylabel('Tiempo [s]')
     plt.title(u'Costo de operaciones según cantidad de episodios')
-    plt.savefig(graphs_folder + "scalability_operation_time_" + suffix + version + ".eps", format="eps", dpi=1000)
+    plt.savefig(graphs_folder + "scalability_operation_time" + suffix + ".eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
 
@@ -136,10 +136,10 @@ def graph_max_qpm():
 
 
     ax.legend(loc='upper right', shadow=True)
-    plt.xlabel('episodios [miles]')
+    plt.xlabel('Episodios [miles]')
     plt.ylabel('Consultas por minuto')
-    plt.title(u'Consultas por minuto según cantidad de episodios (cota superior)')
-    plt.savefig(graphs_folder + "scalability_max_qpm_" + version + ".eps", format="eps", dpi=1000)
+    plt.title(u'CPM según cantidad de episodios (cota superior)')
+    plt.savefig(graphs_folder + "scalability_max_qpm.eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
 
@@ -150,10 +150,10 @@ def graph_disk_usage():
     ax.plot(episodes, mongo_data_size, '.-',  markersize=6, linewidth=1, label=u'Episodios')
     ax.plot(episodes, mongo_idx_size,  '.-',  markersize=6, linewidth=1, label=u'Índices')
     ax.legend(loc='upper left', shadow=True)
-    plt.xlabel('episodios [miles]')
-    plt.ylabel('uso de disco [GB]')
+    plt.xlabel('Episodios [miles]')
+    plt.ylabel('Uso de disco [GB]')
     plt.title(u'Uso de disco según cantidad de episodios')
-    plt.savefig(graphs_folder + "scalability_disk_usage_" + version + ".eps", format="eps", dpi=1000)
+    plt.savefig(graphs_folder + "scalability_disk_usage.eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
 

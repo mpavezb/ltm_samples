@@ -80,6 +80,8 @@ with open(results_file, 'rb') as csvfile:
             results[n_ep] = EpisodeResults(n_ep)
         results[n_ep].update(row)
 
+def fmt_eps(n_ep):
+    return "N=" +  "{:,}".format(n_ep).replace(",", ".")
 
 def gen_formatted_ax():
     fig, ax = plt.subplots()
@@ -101,14 +103,17 @@ def graph_cpu_vs_qpm_by_query(n_ep, attr):
     ax.plot(data.qpm, data.q5[attr].cpu_avg, 'C4.-', label="Consulta Q5")
     plt.ylim(ymax=30)
 
+    leg_loc = 'upper left'
     title_preffix = attr.upper()
     if attr is "sum":
         title_preffix = "DB+LTM"
+        if n_ep >= 50000:
+            leg_loc = 'lower right'
 
-    ax.legend(loc='upper left', shadow=True)
+    ax.legend(loc=leg_loc, shadow=True)
     plt.xlabel('Consultas por minuto')
     plt.ylabel('Uso de CPU [%]')
-    plt.title(title_preffix + ": Uso de CPU vs. consultas por minuto (" + str(n_ep) + " episodios)")
+    plt.title(title_preffix + ": Uso de CPU vs. CPM (" + fmt_eps(n_ep) + ")")
     plt.savefig(graphs_folder + "eff__cpu_qpm_by_query__" + attr + "__" + str(n_ep) + "_episodes.eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
@@ -119,7 +124,7 @@ def graph_cpu_vs_qpm_by_eps(q, attr):
 
     for n_ep in episodes:
         data = results[n_ep]
-        label = "N=" + str(n_ep)
+        label = fmt_eps(n_ep)
         query = getattr(data, q)
         ax.plot(data.qpm, query[attr].cpu_avg, '.-', label=label)
     plt.ylim(ymax=30)
@@ -134,7 +139,7 @@ def graph_cpu_vs_qpm_by_eps(q, attr):
     ax.legend(loc=leg_loc, shadow=True)
     plt.xlabel('Consultas por minuto')
     plt.ylabel('Uso de CPU [%]')
-    plt.title(title_preffix + " | " + q.upper() + ": Uso de CPU vs. consultas por minuto")
+    plt.title(title_preffix + " | " + q.upper() + u": Uso de CPU según CPM")
     plt.savefig(graphs_folder + "eff_cpu_qpm_by_eps__" + attr + "__" + q + ".eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
@@ -144,7 +149,7 @@ def graph_ram_vs_qpm_by_eps():
     ax = gen_formatted_ax()
     for n_ep in episodes:
         result = results[n_ep]
-        label = str(n_ep) + " episodios"
+        label = fmt_eps(n_ep)
         query = getattr(result, 'q1')
 
         x_axis = result.qpm
@@ -155,7 +160,7 @@ def graph_ram_vs_qpm_by_eps():
     ax.legend(loc='upper left', shadow=True)
     plt.xlabel('Consultas por minuto')
     plt.ylabel('Uso de RAM [MB]')
-    plt.title("Uso de RAM vs. consultas por minuto")
+    plt.title(u"Uso de RAM según CPM")
     plt.savefig(graphs_folder + "eff__ram_qpm.eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()

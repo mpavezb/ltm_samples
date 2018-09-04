@@ -170,6 +170,8 @@ class EfficiencyTester(object):
             if it not in self.episodes:
                 continue
 
+            # TODO: measure insertion resource usage by creating labeled episodes and then deleting them.
+
             now = datetime.datetime.now()
             rospy.loginfo(" > CHECKPOINT: " + str(it) + " episodes. (elapsed=" + str(now - self.start_time) + ")")
             
