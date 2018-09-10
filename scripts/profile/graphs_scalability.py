@@ -98,11 +98,11 @@ def graph_operation_times(extended=False):
     # time graphs
     ax = gen_formatted_ax()
     ax.plot(episodes, time_in_avg, '+k-', markersize=6, linewidth=3, label=u'Inserción')
-    ax.plot(episodes, time_q1_avg, 'C0.-',  markersize=6, linewidth=1, label=u'Q1')
-    ax.plot(episodes, time_q2_avg, 'C1.-',  markersize=6, linewidth=1, label=u'Q2')
-    ax.plot(episodes, time_q3_avg, 'C2.-',  markersize=6, linewidth=1, label=u'Q3')
-    ax.plot(episodes, time_q4_avg, 'C3.-',  markersize=6, linewidth=1, label=u'Q4')
-    ax.plot(episodes, time_q5_avg, 'C4.-',  markersize=6, linewidth=1, label=u'Q5')
+    ax.plot(episodes, time_q1_avg, 'C0.-',  markersize=4, linewidth=1, label=u'Q1')
+    ax.plot(episodes, time_q2_avg, 'C1x-',  markersize=4, linewidth=1, label=u'Q2')
+    ax.plot(episodes, time_q3_avg, 'C2*-',  markersize=4, linewidth=1, label=u'Q3')
+    ax.plot(episodes, time_q4_avg, 'C3s-',  markersize=4, linewidth=1, label=u'Q4')
+    ax.plot(episodes, time_q5_avg, 'C4p-',  markersize=4, linewidth=1, label=u'Q5')
     suffix = "_extended"
     if not extended:
         plt.ylim([-0.1, 2.0])
@@ -126,11 +126,11 @@ def graph_max_qpm():
     q4_max_qpm = [60.0/(x+dx) for x in time_q4_avg]
     q5_max_qpm = [60.0/(x+dx) for x in time_q5_avg]
     ax.plot(episodes, in_max_qpm, '+k-', markersize=6, linewidth=3, label=u'Inserción')
-    ax.plot(episodes, q1_max_qpm, 'C0.-',  markersize=6, linewidth=1, label=u'Q1')
-    ax.plot(episodes, q2_max_qpm, 'C1.-',  markersize=6, linewidth=1, label=u'Q2')
-    ax.plot(episodes, q3_max_qpm, 'C2.-',  markersize=6, linewidth=1, label=u'Q3')
-    ax.plot(episodes, q4_max_qpm, 'C3.-',  markersize=6, linewidth=1, label=u'Q4')
-    ax.plot(episodes, q5_max_qpm, 'C4.-',  markersize=6, linewidth=1, label=u'Q5')
+    ax.plot(episodes, q1_max_qpm, 'C0.-',  markersize=4, linewidth=1, label=u'Q1')
+    ax.plot(episodes, q2_max_qpm, 'C1x-',  markersize=4, linewidth=1, label=u'Q2')
+    ax.plot(episodes, q3_max_qpm, 'C2*-',  markersize=4, linewidth=1, label=u'Q3')
+    ax.plot(episodes, q4_max_qpm, 'C3s-',  markersize=4, linewidth=1, label=u'Q4')
+    ax.plot(episodes, q5_max_qpm, 'C4p-',  markersize=4, linewidth=1, label=u'Q5')
     plt.ylim([0, 600])
     plt.xlim(xmin=0)
 
@@ -147,8 +147,8 @@ def graph_disk_usage():
     ax = gen_formatted_ax()
     ax.plot(episodes, mongo_file_size, 'r-', markersize=1, linewidth=3, label=u'Memoria Secundaria')
     ax.plot(episodes, mongo_stg_size,  '.k-', markersize=4, linewidth=1, label=u'Espacio Reservado')
-    ax.plot(episodes, mongo_data_size, '.-',  markersize=6, linewidth=1, label=u'Episodios')
-    ax.plot(episodes, mongo_idx_size,  '.-',  markersize=6, linewidth=1, label=u'Índices')
+    ax.plot(episodes, mongo_data_size, '*-',  markersize=6, linewidth=1, label=u'Episodios')
+    ax.plot(episodes, mongo_idx_size,  'p-',  markersize=6, linewidth=1, label=u'Índices')
     ax.legend(loc='upper left', shadow=True)
     plt.xlabel('Episodios [miles]')
     plt.ylabel('Uso de disco [GB]')

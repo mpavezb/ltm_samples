@@ -99,11 +99,11 @@ def graph_cpu_vs_qpm_by_query(n_ep, attr):
     # fixed episode
     fig, ax = gen_formatted_ax(scale=0.75)
     data = results[n_ep]
-    ax.plot(data.qpm, data.q1[attr].cpu_avg, 'C0.-', label="Q1")
-    ax.plot(data.qpm, data.q2[attr].cpu_avg, 'C1.-', label="Q2")
-    ax.plot(data.qpm, data.q3[attr].cpu_avg, 'C2.-', label="Q3")
-    ax.plot(data.qpm, data.q4[attr].cpu_avg, 'C3.-', label="Q4")
-    ax.plot(data.qpm, data.q5[attr].cpu_avg, 'C4.-', label="Q5")
+    ax.plot(data.qpm, data.q1[attr].cpu_avg, 'C0.-',  markersize=4, label="Q1")
+    ax.plot(data.qpm, data.q2[attr].cpu_avg, 'C1x-',  markersize=4, label="Q2")
+    ax.plot(data.qpm, data.q3[attr].cpu_avg, 'C2*-',  markersize=4, label="Q3")
+    ax.plot(data.qpm, data.q4[attr].cpu_avg, 'C3s-',  markersize=4, label="Q4")
+    ax.plot(data.qpm, data.q5[attr].cpu_avg, 'C4p-',  markersize=4, label="Q5")
     plt.ylim(ymax=30)
 
     leg_loc = 'upper left'
@@ -128,11 +128,14 @@ def graph_cpu_vs_qpm_by_eps(q, attr):
     # fixed query
     fig, ax = gen_formatted_ax(scale=0.75)
 
+    styles = ['.-', 'x-', '*-', 's-', 'p-']
+    idx = 0
     for n_ep in episodes:
         data = results[n_ep]
         label = str(n_ep) + " eps"
         query = getattr(data, q)
-        ax.plot(data.qpm, query[attr].cpu_avg, '.-', label=label)
+        ax.plot(data.qpm, query[attr].cpu_avg, styles[idx], markersize=4, label=label)
+        idx += 1
     plt.ylim(ymax=30)
 
     title_preffix = attr.upper()
@@ -157,6 +160,8 @@ def graph_cpu_vs_qpm_by_eps(q, attr):
 def graph_ram_vs_qpm_by_eps():
     # fixed query
     fig, ax = gen_formatted_ax()
+    styles = ['.-', 'x-', '*-', 's-', 'p-']
+    idx = 0
     for n_ep in episodes:
         result = results[n_ep]
         label = fmt_eps(n_ep)
@@ -165,7 +170,8 @@ def graph_ram_vs_qpm_by_eps():
         x_axis = result.qpm
         # y_axis = query.sum.ram_avg
         y_axis = query.sum.ram_MB_avg
-        ax.plot(x_axis, y_axis, '.-', label=label)
+        ax.plot(x_axis, y_axis, styles[idx], markersize=4, label=label)
+        idx += 1
         
     ax.legend(loc='upper left', shadow=True)
     plt.xlabel(u'CPM')
