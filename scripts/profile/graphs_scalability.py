@@ -98,12 +98,12 @@ def graph_operation_times(extended=False):
     # time graphs
     ax = gen_formatted_ax()
     ax.plot(episodes, time_in_avg, '+k-', markersize=6, linewidth=3, label=u'Inserción')
-    ax.plot(episodes, time_q1_avg, 'C0.-',  markersize=6, linewidth=1, label=u'Consulta Q1')
-    ax.plot(episodes, time_q2_avg, 'C1.-',  markersize=6, linewidth=1, label=u'Consulta Q2')
-    ax.plot(episodes, time_q3_avg, 'C2.-',  markersize=6, linewidth=1, label=u'Consulta Q3')
-    ax.plot(episodes, time_q4_avg, 'C3.-',  markersize=6, linewidth=1, label=u'Consulta Q4')
-    ax.plot(episodes, time_q5_avg, 'C4.-',  markersize=6, linewidth=1, label=u'Consulta Q5')
-    suffix = "extended_"
+    ax.plot(episodes, time_q1_avg, 'C0.-',  markersize=6, linewidth=1, label=u'Q1')
+    ax.plot(episodes, time_q2_avg, 'C1.-',  markersize=6, linewidth=1, label=u'Q2')
+    ax.plot(episodes, time_q3_avg, 'C2.-',  markersize=6, linewidth=1, label=u'Q3')
+    ax.plot(episodes, time_q4_avg, 'C3.-',  markersize=6, linewidth=1, label=u'Q4')
+    ax.plot(episodes, time_q5_avg, 'C4.-',  markersize=6, linewidth=1, label=u'Q5')
+    suffix = "_extended"
     if not extended:
         plt.ylim([-0.1, 2.0])
         suffix = ""
@@ -111,8 +111,8 @@ def graph_operation_times(extended=False):
     ax.legend(loc='upper left', shadow=True)
     plt.xlabel('episodios [miles]')
     plt.ylabel('tiempo [s]')
-    plt.title(u'Costo de operaciones según cantidad de episodios')
-    plt.savefig(graphs_folder + "scalability_operation_time_" + suffix + version + ".eps", format="eps", dpi=1000)
+    plt.title(u'Duración de operaciones según cantidad de episodios')
+    plt.savefig(graphs_folder + "scalability_operation_time" + suffix + ".eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
 
@@ -126,20 +126,20 @@ def graph_max_qpm():
     q4_max_qpm = [60.0/(x+dx) for x in time_q4_avg]
     q5_max_qpm = [60.0/(x+dx) for x in time_q5_avg]
     ax.plot(episodes, in_max_qpm, '+k-', markersize=6, linewidth=3, label=u'Inserción')
-    ax.plot(episodes, q1_max_qpm, 'C0.-',  markersize=6, linewidth=1, label=u'Consulta Q1')
-    ax.plot(episodes, q2_max_qpm, 'C1.-',  markersize=6, linewidth=1, label=u'Consulta Q2')
-    ax.plot(episodes, q3_max_qpm, 'C2.-',  markersize=6, linewidth=1, label=u'Consulta Q3')
-    ax.plot(episodes, q4_max_qpm, 'C3.-',  markersize=6, linewidth=1, label=u'Consulta Q4')
-    ax.plot(episodes, q5_max_qpm, 'C4.-',  markersize=6, linewidth=1, label=u'Consulta Q5')
+    ax.plot(episodes, q1_max_qpm, 'C0.-',  markersize=6, linewidth=1, label=u'Q1')
+    ax.plot(episodes, q2_max_qpm, 'C1.-',  markersize=6, linewidth=1, label=u'Q2')
+    ax.plot(episodes, q3_max_qpm, 'C2.-',  markersize=6, linewidth=1, label=u'Q3')
+    ax.plot(episodes, q4_max_qpm, 'C3.-',  markersize=6, linewidth=1, label=u'Q4')
+    ax.plot(episodes, q5_max_qpm, 'C4.-',  markersize=6, linewidth=1, label=u'Q5')
     plt.ylim([0, 600])
     plt.xlim(xmin=0)
 
 
     ax.legend(loc='upper right', shadow=True)
     plt.xlabel('episodios [miles]')
-    plt.ylabel('Consultas por minuto')
-    plt.title(u'Consultas por minuto según cantidad de episodios (cota superior)')
-    plt.savefig(graphs_folder + "scalability_max_qpm_" + version + ".eps", format="eps", dpi=1000)
+    plt.ylabel('CPM')
+    plt.title(u'CPM según cantidad de episodios (cota superior)')
+    plt.savefig(graphs_folder + "scalability_max_qpm.eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
 
@@ -153,7 +153,7 @@ def graph_disk_usage():
     plt.xlabel('episodios [miles]')
     plt.ylabel('uso de disco [GB]')
     plt.title(u'Uso de disco según cantidad de episodios')
-    plt.savefig(graphs_folder + "scalability_disk_usage_" + version + ".eps", format="eps", dpi=1000)
+    plt.savefig(graphs_folder + "scalability_disk_usage.eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
 
