@@ -80,6 +80,8 @@ with open(results_file, 'rb') as csvfile:
             results[n_ep] = EpisodeResults(n_ep)
         results[n_ep].update(row)
 
+def fmt_eps(n_ep):
+    return "N=" +  "{:,}".format(n_ep).replace(",", ".")
 
 def gen_formatted_ax(scale=1.0):
     fig, ax = plt.subplots()
@@ -104,6 +106,7 @@ def graph_cpu_vs_qpm_by_query(n_ep, attr):
     ax.plot(data.qpm, data.q5[attr].cpu_avg, 'C4.-', label="Q5")
     plt.ylim(ymax=30)
 
+    leg_loc = 'upper left'
     title_preffix = attr.upper()
     if attr is "sum":
         title_preffix = "Sistema LTM"
@@ -156,7 +159,7 @@ def graph_ram_vs_qpm_by_eps():
     fig, ax = gen_formatted_ax()
     for n_ep in episodes:
         result = results[n_ep]
-        label = str(n_ep) + " episodios"
+        label = fmt_eps(n_ep)
         query = getattr(result, 'q1')
 
         x_axis = result.qpm
