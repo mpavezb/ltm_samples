@@ -88,9 +88,12 @@ class BenchmarkSuite(object):
     def search_time(self, json):
         """returns elapsed milliseconds"""
         start = datetime.datetime.now()
-        self.ltm.query(json)
+        self.query(json)
         elapsed = datetime.datetime.now() - start
         return elapsed.total_seconds() * 1000.0
+
+    def query(self, json):
+        self.ltm.query(json)
 
     def status(self):
         self.ltm.db_status()

@@ -113,7 +113,7 @@ class EfficiencyTester(object):
     def test_base(self):
         pass
 
-    def test_query(self, qpm, name, json_func):
+    def test_query(self, qpm, name, json_func, fake=False):
         elapsed_from_init = datetime.datetime.now() - self.start_time
         rospy.loginfo("   - elapsed=" + str(elapsed_from_init) + "[s], query=" + name + ".")
 
@@ -135,7 +135,10 @@ class EfficiencyTester(object):
                 break
 
             # perform query
-            self.suite.search_time(json_func())
+            if fake:
+                rospy.sleep(10.0)
+            else:
+                self.suite.query(json_func())
 
             # measure fields
             now = datetime.datetime.now()
@@ -184,6 +187,7 @@ class EfficiencyTester(object):
                 elapsed = now - self.start_time
                 rospy.loginfo(" - RATE: " + str(qpm) + " [queries/min] (elapsed=" + str(elapsed) + ")")
 
+                r0 = self.test_query(qpm, "base_state", None, True)
                 r1 = self.test_query(qpm, "q1:field_equals_int", queries.field_equals_int)
                 r2 = self.test_query(qpm, "q2:array_contains_field", queries.array_contains_field)
                 r3 = self.test_query(qpm, "q3:field_in_array", queries.field_in_array)
@@ -201,6 +205,7 @@ class EfficiencyTester(object):
                 row.append(it)
                 row.append(qpm)
                 row.append(elapsed_seconds)
+                row.extend(r0)
                 row.extend(r1)
                 row.extend(r2)
                 row.extend(r3)
