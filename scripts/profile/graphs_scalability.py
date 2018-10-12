@@ -7,11 +7,10 @@ import csv
 import matplotlib.pyplot as plt
 import rospkg
 
-version = "v2"
 base_folder = rospkg.RosPack().get_path('ltm_samples') + "/scripts/profile/"
 results_folder = base_folder + "results/"
 graphs_folder = base_folder + "graph/"
-results_file = results_folder + "scalability_ouput_" + version + ".csv"
+results_file = results_folder + "scalability_ouput.csv"
 
 
 stamps = []

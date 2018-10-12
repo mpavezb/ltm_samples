@@ -81,7 +81,7 @@ with open(results_file, 'rb') as csvfile:
         results[n_ep].update(row)
 
 def fmt_eps(n_ep):
-    return "N=" +  "{:,}".format(n_ep).replace(",", ".")
+    return "{:,}".format(n_ep).replace(",", ".")
 
 def gen_formatted_ax(scale=1.0):
     fig, ax = plt.subplots()
@@ -119,7 +119,7 @@ def graph_cpu_vs_qpm_by_query(n_ep, attr):
     ax.legend(loc='upper left', shadow=True)
     plt.xlabel('CPM')
     plt.ylabel('uso de CPU [%]')
-    plt.title(title_preffix + u": Uso de CPU según CPM (" + str(n_ep) + " eps)")
+    plt.title(title_preffix + u": Uso de CPU según CPM (" + fmt_eps(n_ep) + " eps)")
     plt.savefig(graphs_folder + "eff__cpu_qpm_by_query__" + attr + "__" + str(n_ep) + "_episodes.eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
@@ -132,7 +132,7 @@ def graph_cpu_vs_qpm_by_eps(q, attr):
     idx = 0
     for n_ep in episodes:
         data = results[n_ep]
-        label = str(n_ep) + " eps"
+        label = fmt_eps(n_ep) + " eps"
         query = getattr(data, q)
         ax.plot(data.qpm, query[attr].cpu_avg, styles[idx], markersize=4, label=label)
         idx += 1
@@ -176,7 +176,7 @@ def graph_ram_vs_qpm_by_eps():
     ax.legend(loc='upper left', shadow=True)
     plt.xlabel(u'CPM')
     plt.ylabel(u'uso de RAM [MB]')
-    plt.title(u"Uso de RAM según CPM")
+    plt.title(u"Sistema LTM: Uso de RAM según CPM")
     plt.savefig(graphs_folder + "eff__ram_qpm.eps", format="eps", dpi=1000)
     # plt.show()
     plt.close()
