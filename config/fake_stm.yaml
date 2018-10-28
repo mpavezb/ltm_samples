@@ -2,8 +2,8 @@
 entities: ["person"]
 
 person:
-  max_instances: 5
-  update_period: 0.2 # [seconds]
+  max_instances: 3
+  update_period: 2 # [seconds]
 
   # fields to consider
   initial_fields: ["meta", "name", "last_name"]

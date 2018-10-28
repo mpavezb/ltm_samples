@@ -7,7 +7,7 @@ import csv
 import datetime
 import rospy
 import rospkg
-from ltm_samples.faker.episodes import EpisodeFaker
+from ltm_samples.fake.episodes import EpisodeFaker
 from ltm_samples.benchmarking.client import LTMClient
 
 class BenchmarkSuite(object):

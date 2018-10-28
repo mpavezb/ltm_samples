@@ -2,6 +2,7 @@
 #define LTM_SAMPLES_PEOPLE_ENTITY_PLUGIN_H_
 
 #include <ros/ros.h>
+#include <ltm/util/util.h>
 #include <ltm/plugin/entity_base.h>
 #include <ltm/plugin/entity_default.h>
 #include <ltm_samples/PersonEntity.h>
@@ -46,6 +47,7 @@ namespace ltm_samples
 
         // plugin specific variables
         EntityMsg _null_e;
+        std::set<std::string> _field_names;
 
         // ROS API
         std::string _log_prefix;
@@ -76,6 +78,8 @@ namespace ltm_samples
         void reset(const std::string &db_name);
         void append_status(std::stringstream &status);
         MetadataPtr make_metadata(const EntityMsg &entity);
+        void retrace(EntityMsg &entity, const std::vector<uint32_t> &logs);
+        void retrace_retrieve_field(const std::string& name, EntityWithMetadataPtr &in, EntityMsg &out);
     };
 
 

@@ -10,7 +10,7 @@ import os
 import pymongo
 import rospy
 from ltm_samples.benchmarking.client import LTMClient
-from ltm_samples.faker.episodes import EpisodeFaker
+from ltm_samples.fake.episodes import EpisodeFaker
 
 class Record(object):
 

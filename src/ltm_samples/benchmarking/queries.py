@@ -4,7 +4,7 @@ __author__ = 'Matías Pavez'
 __email__ = 'matias.pavez@ing.uchile.cl'
 
 import random
-from ltm_samples.faker.episodes import EpisodeFaker
+from ltm_samples.fake.episodes import EpisodeFaker
 
 # COMPARISON
 # $eq     Matches values that are equal to a specified value.
