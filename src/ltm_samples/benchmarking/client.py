@@ -64,7 +64,6 @@ class LTMClient(object):
             req.gather_entities = False
             req.replace = True
             req.generate_uid = False
-            req.is_leaf = episode.type == Episode.LEAF
             req.uid = episode.uid
             self.register_episode_client(req)        
         except rospy.ServiceException, e:
