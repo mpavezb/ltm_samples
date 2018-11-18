@@ -169,8 +169,6 @@ namespace ltm_samples
 
         // WHEN
         log.timestamp = ros::Time::now();
-        log.prev_log = (uint32_t) this->ltm_get_last_log_uid(log.entity_uid);
-        // log.next_log = 0;
 
         // WHO
         this->ltm_get_registry(log.episode_uids);
