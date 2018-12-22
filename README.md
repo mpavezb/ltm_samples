@@ -1,8 +1,13 @@
 # ltm_samples ROS package
 
-*(under development)*
+Testing code and demos for the ROS Long Term Memory (LTM) suite.
 
-Testing code and demo episodic information for the [ROS ltm package](https://github.com/mpavezb/ltm).
+The LTM documentation can be located in the [repository of the ltm ROS package](https://github.com/mpavezb/ltm).
 
-More info on the [tutorials section](https://github.com/mpavezb/ltm/blob/master/doc/tutorials.md) of the LTM package.
 
+## LTM Suite - ROS packages:
+
+- [ltm](https://github.com/mpavezb/ltm)
+- [ltm_addons](https://github.com/mpavezb/ltm_addons)
+- [ltm_samples](https://github.com/mpavezb/ltm_samples)
+- [ltm_db](https://github.com/mpavezb/ltm_db)
